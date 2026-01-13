@@ -144,13 +144,13 @@ public class HaikyuuCharacterService {
                 .orElseThrow(() -> new RuntimeException("Character not found"));
     }
 
-    private List<HaikyuuCharacterDTO> mapListToDTO(List<HaikyuuCharacter> characters) {
+    public List<HaikyuuCharacterDTO> mapListToDTO(List<HaikyuuCharacter> characters) {
         return characters.stream()
                 .map(this::convertToDTO)
                 .toList();
     }
 
-    private HaikyuuCharacterDTO convertToDTO(HaikyuuCharacter character) {
+    public HaikyuuCharacterDTO convertToDTO(HaikyuuCharacter character) {
 
         return new HaikyuuCharacterDTO(
                 character.getId(),

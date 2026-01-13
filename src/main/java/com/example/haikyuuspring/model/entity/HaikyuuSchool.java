@@ -19,7 +19,7 @@ public class HaikyuuSchool {
     private String mascot;
     private String colors;
 
-    @OneToOne(mappedBy = "school")
+    @OneToOne(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     private HaikyuuTeamRoster team;
 
     public void addCharacter(HaikyuuCharacter character) {

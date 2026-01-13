@@ -1,13 +1,11 @@
 package com.example.haikyuuspring.services;
 
-import com.example.haikyuuspring.controller.dto.HaikyuuSchoolDTO;
-import com.example.haikyuuspring.controller.dto.HaikyuuSchoolLookupDTO;
-import com.example.haikyuuspring.controller.dto.HaikyuuTeamDetailsDTO;
-import com.example.haikyuuspring.controller.dto.HaikyuuTeamRosterDTO;
+import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.DuplicateSchoolException;
 import com.example.haikyuuspring.exception.NoPrefectureException;
 import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
+import com.example.haikyuuspring.repository.HaikyuuCharacterRepository;
 import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HaikyuuSchoolService {
     private final HaikyuuSchoolRepository schoolRepository;
+    private final HaikyuuCharacterService characterService;
 
     @Transactional
     public HaikyuuSchoolDTO createSchool(HaikyuuSchoolDTO schoolInfo) {
@@ -32,16 +31,14 @@ public class HaikyuuSchoolService {
         school.setColors(schoolInfo.colors());
         school.setName(schoolInfo.name());
         school.setPrefecture(schoolInfo.prefecture());
-        school.setColors(schoolInfo.colors());
         school.setTeam(team);
         school.setMascot(schoolInfo.mascot());
         school.setImgUrl(schoolInfo.imgUrl());
 
+        team.setSchool(school);
         HaikyuuSchool newSchool = schoolRepository.save(school);
 
-        return new HaikyuuSchoolDTO(newSchool.getId(), newSchool.getName(), newSchool.getPrefecture(), new HaikyuuTeamRosterDTO(
-                newSchool.getTeam().getTeamMotto()
-        ), newSchool.getMascot(),newSchool.getImgUrl());
+        return convertToDto(newSchool);
     }
 
     public HaikyuuSchoolDTO getSchoolInfo(Long schoolId) {
@@ -66,11 +63,19 @@ public class HaikyuuSchoolService {
     }
 
     private HaikyuuSchoolDTO convertToDto(HaikyuuSchool school) {
+        List<HaikyuuCharacterDTO> roster = null;
+        String motto = " ";
+        if (school.getTeam() != null) {
+            roster = school.getTeam().getRoster().stream().map(characterService::convertToDTO).toList();
+            motto = school.getTeam().getTeamMotto();
+        }
+
         return new HaikyuuSchoolDTO(
                 school.getId(),
                 school.getName(),
                 school.getPrefecture(),
-                new HaikyuuTeamRosterDTO(school.getTeam().getTeamMotto(), school.getTeam().getColors()),
+                new HaikyuuTeamRosterDTO(roster, motto),
+                motto,
                 school.getMascot(),
                 school.getImgUrl()
         );

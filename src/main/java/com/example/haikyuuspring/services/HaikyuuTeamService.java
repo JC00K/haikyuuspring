@@ -22,24 +22,24 @@ public class HaikyuuTeamService {
     private final HaikyuuSchoolRepository schoolRepository;
     private final HaikyuuCharacterRepository characterRepository;
 
-    public List<HaikyuuCharacterDTO> findByPosition(Long schoolId, Position position) {
-        HaikyuuTeamRoster roster = rosterRepository.findById(schoolId).orElseThrow(() -> new RuntimeException("No Roster found with ID " + schoolId));
-        return roster.getRoster().stream().filter((p) -> p.getPosition() == position).toList();
-    }
+//    public List<HaikyuuCharacterDTO> findByPosition(Long schoolId, Position position) {
+//        HaikyuuTeamRoster roster = rosterRepository.findById(schoolId).orElseThrow(() -> new RuntimeException("No Roster found with ID " + schoolId));
+//        return roster.getRoster().stream().filter((p) -> p.getPosition() == position).toList();
+//    }
 
-    private HaikyuuTeamRosterDTO convertToDTO(HaikyuuTeamRoster roster) {
-
-        return new HaikyuuTeamRosterDTO(
-                character.getId(),
-                character.getName(),
-                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getId).orElse(null),
-                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getName).orElse(null),
-                character.getRole(),
-                character.getPosition(),
-                character.getAge(),
-                character.getYear(),
-                character.getHeight(),
-                character.getImgUrl()
-        );
-    }
+//    private HaikyuuTeamRosterDTO convertToDTO(HaikyuuTeamRoster roster) {
+//
+//        return new HaikyuuTeamRosterDTO(
+//                character.getId(),
+//                character.getName(),
+//                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getId).orElse(null),
+//                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getName).orElse(null),
+//                character.getRole(),
+//                character.getPosition(),
+//                character.getAge(),
+//                character.getYear(),
+//                character.getHeight(),
+//                character.getImgUrl()
+//        );
+//    }
 }
