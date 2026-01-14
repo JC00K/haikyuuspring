@@ -49,4 +49,9 @@ public class HaikyuuSchoolController {
     public ResponseEntity<HaikyuuSchoolDTO> createSchool(@Valid @RequestBody HaikyuuSchoolDTO schoolDTO) {
         return new ResponseEntity<>(haikyuuSchoolService.createSchool(schoolDTO), HttpStatus.CREATED);
     }
+
+    @DeleteMapping
+    public void deleteSchool(Long schoolId) {
+        haikyuuSchoolService.deleteSchool(schoolId);
+    }
 }

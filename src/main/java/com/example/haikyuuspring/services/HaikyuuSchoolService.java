@@ -3,6 +3,7 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.DuplicateSchoolException;
 import com.example.haikyuuspring.exception.NoPrefectureException;
+import com.example.haikyuuspring.exception.SchoolNotFoundException;
 import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
 import com.example.haikyuuspring.repository.HaikyuuCharacterRepository;
@@ -79,5 +80,11 @@ public class HaikyuuSchoolService {
                 school.getMascot(),
                 school.getImgUrl()
         );
+    }
+
+    @Transactional
+    public void deleteSchool(Long schoolId) {
+        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new SchoolNotFoundException(schoolId));
+        schoolRepository.delete(school);
     }
 }
