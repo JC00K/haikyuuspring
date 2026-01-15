@@ -1,12 +1,10 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.*;
-import com.example.haikyuuspring.exception.DuplicateSchoolException;
-import com.example.haikyuuspring.exception.NoPrefectureException;
-import com.example.haikyuuspring.exception.SchoolNotFoundException;
+import com.example.haikyuuspring.exception.ResourceDuplicateException;
+import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
-import com.example.haikyuuspring.repository.HaikyuuCharacterRepository;
 import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,7 @@ public class HaikyuuSchoolService {
     @Transactional
     public HaikyuuSchoolDTO createSchool(HaikyuuSchoolDTO schoolInfo) {
         if (schoolRepository.existsByName(schoolInfo.name())) {
-            throw new DuplicateSchoolException(schoolInfo.name());
+            throw new ResourceDuplicateException(schoolInfo.name());
         }
         HaikyuuSchool school = new HaikyuuSchool();
         HaikyuuTeamRoster team = new HaikyuuTeamRoster();
@@ -42,8 +40,14 @@ public class HaikyuuSchoolService {
         return convertToDto(newSchool);
     }
 
+    @Transactional
+    public void deleteSchool(Long schoolId) {
+        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
+        schoolRepository.delete(school);
+    }
+
     public HaikyuuSchoolDTO getSchoolInfo(Long schoolId) {
-        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new RuntimeException("School not found"));
+        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
         return convertToDto(school);
     }
 
@@ -51,7 +55,7 @@ public class HaikyuuSchoolService {
         List<HaikyuuSchool> schools = schoolRepository.findByPrefectureIgnoreCase(prefecture);
 
         if (schools.isEmpty()) {
-            throw new NoPrefectureException(prefecture);
+            throw new ResourceNotFoundException(prefecture);
         }
 
         return schools.stream().map(this::convertToDto).toList();
@@ -82,9 +86,4 @@ public class HaikyuuSchoolService {
         );
     }
 
-    @Transactional
-    public void deleteSchool(Long schoolId) {
-        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new SchoolNotFoundException(schoolId));
-        schoolRepository.delete(school);
-    }
 }

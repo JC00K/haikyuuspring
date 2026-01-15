@@ -26,17 +26,17 @@ public class HaikyuuCharacterController {
         return ResponseEntity.ok(haikyuuCharacterService.findAllCharacters());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<HaikyuuCharacterDTO> getCharacterById(@PathVariable Long id) {
         return ResponseEntity.ok(haikyuuCharacterService.findCharacterById(id));
     }
 
-    @GetMapping("/{age}")
+    @GetMapping("/age/{age}")
     public ResponseEntity <List<HaikyuuCharacterDTO>> getCharactersByAge(@PathVariable int age) {
         return ResponseEntity.ok(haikyuuCharacterService.findByAge(age));
     }
 
-    @GetMapping("/{year}")
+    @GetMapping("/year/{year}")
     public ResponseEntity <List<HaikyuuCharacterDTO>> getCharactersByYear(@PathVariable Year year) {
         return ResponseEntity.ok(haikyuuCharacterService.findCharacterByYear(year));
     }
@@ -52,12 +52,12 @@ public class HaikyuuCharacterController {
     }
 
     @GetMapping("/greater_than_{height}")
-    public ResponseEntity<List<HaikyuuCharacterDTO>> getCharactersByHeightGreaterThan(Double height) {
+    public ResponseEntity<List<HaikyuuCharacterDTO>> getCharactersByHeightGreaterThan(@PathVariable Double height) {
         return ResponseEntity.ok(haikyuuCharacterService.findByHeightGreaterThan(height));
     }
 
     @GetMapping("/less_than_{height}")
-    public ResponseEntity<List<HaikyuuCharacterDTO>> getCharactersByHeightLessThan(Double height) {
+    public ResponseEntity<List<HaikyuuCharacterDTO>> getCharactersByHeightLessThan(@PathVariable Double height) {
         return ResponseEntity.ok(haikyuuCharacterService.findByHeightLessThan(height));
     }
 

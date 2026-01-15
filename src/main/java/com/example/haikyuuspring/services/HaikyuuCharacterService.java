@@ -1,7 +1,8 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.HaikyuuCharacterDTO;
-import com.example.haikyuuspring.exception.DuplicateCharacterException;
+import com.example.haikyuuspring.exception.ResourceDuplicateException;
+import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.HaikyuuCharacter;
 import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.enums.Position;
@@ -28,26 +29,19 @@ public class HaikyuuCharacterService {
     @Transactional
     public HaikyuuCharacterDTO createCharacter(HaikyuuCharacterDTO characterInfo) {
         if (characterRepository.existsByName(characterInfo.name())) {
-            throw new DuplicateCharacterException(characterInfo.name());
+            throw new ResourceDuplicateException(characterInfo.name());
         }
 
         HaikyuuCharacter character = new HaikyuuCharacter();
 
         if (characterInfo.schoolId() != null) {
-            HaikyuuSchool school = schoolRepository.findById(characterInfo.schoolId()).orElseThrow(() -> new RuntimeException("School not found!"));
+            HaikyuuSchool school = schoolRepository.findById(characterInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(characterInfo.schoolId()));
             character.setSchool(school);
         }
 
-        if (characterInfo.year() != null) {
-            character.setYear(characterInfo.year());
-        } else character.setYear(null);
-
-        if (characterInfo.age() != null) {
-            character.setAge(characterInfo.age());
-        } else character.setAge(null);
-
         character.setName(characterInfo.name());
         character.setAge(characterInfo.age());
+        character.setYear(characterInfo.year());
         character.setHeight(characterInfo.height());
         character.setRole(characterInfo.role());
         character.setPosition(characterInfo.position());
@@ -55,24 +49,13 @@ public class HaikyuuCharacterService {
 
         HaikyuuCharacter newCharacter = characterRepository.save(character);
 
-        return new HaikyuuCharacterDTO(
-                newCharacter.getId(),
-                newCharacter.getName(),
-                newCharacter.getSchool().getId(),
-                newCharacter.getSchool().getName(),
-                newCharacter.getRole(),
-                newCharacter.getPosition(),
-                newCharacter.getAge(),
-                newCharacter.getYear(),
-                newCharacter.getHeight(),
-                newCharacter.getImgUrl()
-        );
+        return convertToDTO(newCharacter);
     }
 
     @Transactional
     public HaikyuuCharacterDTO assignSchoolToCharacter(Long characterId, String schoolName) {
-        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new RuntimeException("No character with provided id found"));
-        HaikyuuSchool school =  schoolRepository.findByNameIgnoreCase(schoolName).orElseThrow(() -> new RuntimeException("No school with provided name found"));
+        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new ResourceNotFoundException(characterId));
+        HaikyuuSchool school =  schoolRepository.findByNameIgnoreCase(schoolName).orElseThrow(() -> new ResourceNotFoundException(schoolName));
         if (character.getTeam() != null) {
             character.getTeam().removeCharacterFromRoster(character);
         }
@@ -86,14 +69,14 @@ public class HaikyuuCharacterService {
 
     @Transactional
     public HaikyuuCharacterDTO assignYearToCharacter(Long characterId, Year year) {
-        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new RuntimeException("No character with provided id found"));
+        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new ResourceNotFoundException(characterId));
         character.setYear(year);
         return convertToDTO(characterRepository.save(character));
     }
 
     @Transactional
     public HaikyuuCharacterDTO assignAgeToCharacter(Long characterId, Integer age) {
-        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new RuntimeException("No character with provided id found"));
+        HaikyuuCharacter character = characterRepository.findById(characterId).orElseThrow(() -> new ResourceNotFoundException(characterId));
         character.setAge(age);
         return convertToDTO(characterRepository.save(character));
     }
@@ -141,7 +124,7 @@ public class HaikyuuCharacterService {
     public HaikyuuCharacterDTO findCharacterById(Long id) {
         return characterRepository.findById(id)
                 .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("Character not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public List<HaikyuuCharacterDTO> mapListToDTO(List<HaikyuuCharacter> characters) {
