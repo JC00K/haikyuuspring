@@ -4,6 +4,7 @@ public enum Role {
     PLAYER,
     COACH,
     MANAGER,
+    ADVISOR,
     FAN,
     ALUMNI
 }

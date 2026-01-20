@@ -5,6 +5,7 @@ import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class HaikyuuSchoolService {
     private final HaikyuuSchoolRepository schoolRepository;
     private final HaikyuuCharacterService characterService;
+    private final HaikyuuTeamService teamService;
 
     @Transactional
     public HaikyuuSchoolDTO createSchool(HaikyuuSchoolDTO schoolInfo) {
@@ -68,10 +70,14 @@ public class HaikyuuSchoolService {
     }
 
     private HaikyuuSchoolDTO convertToDto(HaikyuuSchool school) {
-        List<HaikyuuCharacterDTO> roster = null;
+        List<HaikyuuCharacterDTO> players = null;
+        List<HaikyuuCharacterDTO> staff = null;
         String motto = " ";
+
+
         if (school.getTeam() != null) {
-            roster = school.getTeam().getRoster().stream().map(characterService::convertToDTO).toList();
+            players = school.getTeam().getPlayers().stream().map(characterService::convertToDTO).toList();
+            staff = school.getTeam().getStaff().stream().map(characterService::convertToDTO).toList();
             motto = school.getTeam().getTeamMotto();
         }
 
@@ -79,7 +85,7 @@ public class HaikyuuSchoolService {
                 school.getId(),
                 school.getName(),
                 school.getPrefecture(),
-                new HaikyuuTeamRosterDTO(roster, motto),
+                new HaikyuuTeamRosterDTO(players, staff, motto),
                 motto,
                 school.getMascot(),
                 school.getImgUrl()

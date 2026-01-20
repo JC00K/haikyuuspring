@@ -3,17 +3,16 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.HaikyuuCharacterDTO;
 import com.example.haikyuuspring.controller.dto.HaikyuuTeamRosterDTO;
 import com.example.haikyuuspring.model.entity.HaikyuuCharacter;
-import com.example.haikyuuspring.model.entity.HaikyuuSchool;
 import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
-import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.repository.HaikyuuCharacterRepository;
 import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
 import com.example.haikyuuspring.repository.HaikyuuTeamRosterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,25 +20,45 @@ public class HaikyuuTeamService {
     private final HaikyuuTeamRosterRepository rosterRepository;
     private final HaikyuuSchoolRepository schoolRepository;
     private final HaikyuuCharacterRepository characterRepository;
+    private final HaikyuuCharacterService characterService;
+
 
 //    public List<HaikyuuCharacterDTO> findByPosition(Long schoolId, Position position) {
 //        HaikyuuTeamRoster roster = rosterRepository.findById(schoolId).orElseThrow(() -> new RuntimeException("No Roster found with ID " + schoolId));
 //        return roster.getRoster().stream().filter((p) -> p.getPosition() == position).toList();
 //    }
 
-//    private HaikyuuTeamRosterDTO convertToDTO(HaikyuuTeamRoster roster) {
-//
-//        return new HaikyuuTeamRosterDTO(
-//                character.getId(),
-//                character.getName(),
-//                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getId).orElse(null),
-//                Optional.ofNullable(character.getSchool()).map(HaikyuuSchool::getName).orElse(null),
-//                character.getRole(),
-//                character.getPosition(),
-//                character.getAge(),
-//                character.getYear(),
-//                character.getHeight(),
-//                character.getImgUrl()
-//        );
-//    }
+    private List<HaikyuuCharacterDTO> getCoaches(HaikyuuTeamRoster roster) {
+        List<HaikyuuCharacter> coaches = roster.getCoachesOnly();
+        return characterService.mapListToDTO(coaches);
+    }
+
+    private List<HaikyuuCharacterDTO> getManagers(HaikyuuTeamRoster roster) {
+        List<HaikyuuCharacter> managers = roster.getManagersOnly();
+        return characterService.mapListToDTO(managers);
+    }
+
+    private List<HaikyuuCharacterDTO> getAdvisors(HaikyuuTeamRoster roster) {
+        List<HaikyuuCharacter> advisors = roster.getAdvisorsOnly();
+        return characterService.mapListToDTO(advisors);
+    }
+
+
+    private HaikyuuTeamRosterDTO convertToDTO(HaikyuuTeamRoster roster) {
+
+        List<HaikyuuCharacter> players = roster.getPlayers();
+        List<HaikyuuCharacter> staff = roster.getStaff();
+
+
+        List<HaikyuuCharacterDTO> mappedPlayers = characterService.mapListToDTO(players);
+        List<HaikyuuCharacterDTO> mappedStaff = characterService.mapListToDTO(staff);
+
+
+        return new HaikyuuTeamRosterDTO(
+                mappedPlayers,
+                mappedStaff,
+                roster.getTeamMotto()
+        );
+    }
+
 }

@@ -35,7 +35,7 @@ public class HaikyuuCharacterIntegrationTest {
     @BeforeEach
     void setup() {
         // Create the school first (this runs before every @Test)
-        HaikyuuTeamRosterDTO team = new HaikyuuTeamRosterDTO( null, "School motto would be here");
+        HaikyuuTeamRosterDTO team = new HaikyuuTeamRosterDTO( null, null, "School motto would go here");
         HaikyuuSchoolDTO schoolRequest = new HaikyuuSchoolDTO(
                 null, "Inarizaki", "Hyogo", team, "Black and White", "Foxes", "https://img.url"
         );
