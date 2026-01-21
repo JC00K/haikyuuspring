@@ -1,6 +1,7 @@
 package com.example.haikyuuspring.model.entity;
 
 
+import com.example.haikyuuspring.model.enums.Management;
 import com.example.haikyuuspring.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,9 +10,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Entity
 @Table(name = "team_rosters")
@@ -30,29 +29,34 @@ public class HaikyuuTeamRoster {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HaikyuuCharacter> members = new ArrayList<>();
 
-    private List<Role> staffRoles = Arrays.asList(Role.COACH, Role.ADVISOR, Role.MANAGER);
+    private List<Management> staffRoles = Arrays.asList(Management.ADVISOR, Management.MANAGER);
     private String teamName;
     private String teamMotto;
 
     public void addCharacter(HaikyuuCharacter character) {
-        if (staffRoles.contains(character.getRole())) {
+        if (staffRoles.contains(character.getManagementRole())) {
             members.add(character);
 
         }
         if (character.getRole() == Role.PLAYER) {
             members.add(character);
         }
+
+
         character.setSchool(school);
         character.setTeam(this);
     }
 
     public void removeCharacterFromRoster(HaikyuuCharacter character) {
-        if (staffRoles.contains(character.getRole())) {
+        if (staffRoles.contains(character.getManagementRole())) {
             members.remove(character);
             character.setTeam(null);
         }
         if (character.getRole() == Role.PLAYER) {
             members.remove(character);
+            character.setTeam(null);
+        }
+        if (character.getRole() == Role.COACH) {
             character.setTeam(null);
         }
     }
@@ -62,7 +66,7 @@ public class HaikyuuTeamRoster {
     }
 
     public List<HaikyuuCharacter> getStaff() {
-        return members.stream().filter((c) -> staffRoles.contains(c.getRole())).toList();
+        return members.stream().filter((c) -> staffRoles.contains(c.getManagementRole())).toList();
     }
 
     public List<HaikyuuCharacter> getCoachesOnly() {
@@ -70,11 +74,11 @@ public class HaikyuuTeamRoster {
     }
 
     public List<HaikyuuCharacter> getManagersOnly() {
-        return members.stream().filter((c) -> c.getRole() == Role.MANAGER).toList();
+        return members.stream().filter((c) -> c.getManagementRole() == Management.MANAGER).toList();
     }
 
     public List<HaikyuuCharacter> getAdvisorsOnly() {
-        return members.stream().filter((c) -> c.getRole() == Role.ADVISOR).toList();
+        return members.stream().filter((c) -> c.getManagementRole() == Management.ADVISOR).toList();
     }
 
     public HaikyuuTeamRoster(HaikyuuSchool school) {

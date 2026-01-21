@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.model.entity;
 
+import com.example.haikyuuspring.model.enums.Management;
 import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
@@ -29,6 +30,9 @@ public class HaikyuuCharacter {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Management managementRole;
 
     @Enumerated(EnumType.STRING)
     private Position position;
