@@ -1,6 +1,6 @@
 package com.example.haikyuuspring.model.entity;
 
-import com.example.haikyuuspring.model.enums.Management;
+import com.example.haikyuuspring.model.enums.StaffEnum;
 import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,8 +24,8 @@ public class Character {
     private School school;
 
     @ManyToOne()
-    @JoinColumn(name = "team_id")
-    private Roster team;
+    @JoinColumn(name = "roster_id")
+    private Roster roster;
 
     private String name;
 
@@ -32,7 +33,7 @@ public class Character {
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private Management managementRole;
+    private StaffEnum managementRole;
 
     @Enumerated(EnumType.STRING)
     private Position position;
@@ -50,8 +51,8 @@ public class Character {
             System.out.println("Character " + character.getName() + " has been removed from " + charSchool.getName());
         }
         if (character.getRole() == Role.PLAYER) {
-            team.removeCharacterFromRoster(character);
-            character.setTeam(null);
+            roster.removeCharacterFromRoster(character);
+            character.setRoster(null);
         } else System.out.println("Character " + character.getName() + " is not a player, and it not associated with " + charSchool + "'s roster");
     }
 }

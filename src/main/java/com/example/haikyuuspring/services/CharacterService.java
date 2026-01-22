@@ -56,8 +56,8 @@ public class CharacterService {
     public CharacterDTO assignSchoolToCharacter(Long characterId, String schoolName) {
         Character character = characterRepository.findById(characterId).orElseThrow(() -> new ResourceNotFoundException(characterId));
         School school =  schoolRepository.findByNameIgnoreCase(schoolName).orElseThrow(() -> new ResourceNotFoundException(schoolName));
-        if (character.getTeam() != null) {
-            character.getTeam().removeCharacterFromRoster(character);
+        if (character.getRoster() != null) {
+            character.getRoster().removeCharacterFromRoster(character);
         }
         if (character.getSchool() != null) {
             character.removeCharacterFromSchool(character);

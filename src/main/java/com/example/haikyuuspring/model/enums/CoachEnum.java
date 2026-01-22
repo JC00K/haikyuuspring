@@ -1,6 +1,6 @@
 package com.example.haikyuuspring.model.enums;
 
-public enum Coach {
+public enum CoachEnum {
     HEAD,
     ASSISTANT
 }

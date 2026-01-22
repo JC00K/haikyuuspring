@@ -1,7 +1,7 @@
 package com.example.haikyuuspring.model.entity;
 
 
-import com.example.haikyuuspring.model.enums.Management;
+import com.example.haikyuuspring.model.enums.StaffEnum;
 import com.example.haikyuuspring.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class Roster {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Character> members = new ArrayList<>();
 
-    private List<Management> staffRoles = Arrays.asList(Management.ADVISOR, Management.MANAGER);
+    private List<StaffEnum> staffRoles = Arrays.asList(StaffEnum.ADVISOR, StaffEnum.MANAGER);
     private String teamName;
     private String teamMotto;
 
@@ -44,20 +44,20 @@ public class Roster {
 
 
         character.setSchool(school);
-        character.setTeam(this);
+        character.setRoster(this);
     }
 
     public void removeCharacterFromRoster(Character character) {
         if (staffRoles.contains(character.getManagementRole())) {
             members.remove(character);
-            character.setTeam(null);
+            character.setRoster(null);
         }
         if (character.getRole() == Role.PLAYER) {
             members.remove(character);
-            character.setTeam(null);
+            character.setRoster(null);
         }
         if (character.getRole() == Role.COACH) {
-            character.setTeam(null);
+            character.setRoster(null);
         }
     }
 
@@ -74,11 +74,11 @@ public class Roster {
     }
 
     public List<Character> getManagersOnly() {
-        return members.stream().filter((c) -> c.getManagementRole() == Management.MANAGER).toList();
+        return members.stream().filter((c) -> c.getManagementRole() == StaffEnum.MANAGER).toList();
     }
 
     public List<Character> getAdvisorsOnly() {
-        return members.stream().filter((c) -> c.getManagementRole() == Management.ADVISOR).toList();
+        return members.stream().filter((c) -> c.getManagementRole() == StaffEnum.ADVISOR).toList();
     }
 
     public Roster(School school) {
