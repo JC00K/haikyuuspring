@@ -1,6 +1,6 @@
 package com.example.haikyuuspring.controller.dto;
 
-public record HaikyuuSchoolLookupDTO(
+public record SchoolLookupDTO(
         Long id,
         String name
 ) {}

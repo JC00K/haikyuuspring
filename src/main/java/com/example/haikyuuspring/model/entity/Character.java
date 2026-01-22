@@ -13,18 +13,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "characters")
-public class HaikyuuCharacter {
+public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    private HaikyuuSchool school;
+    private School school;
 
     @ManyToOne()
     @JoinColumn(name = "team_id")
-    private HaikyuuTeamRoster team;
+    private Roster team;
 
     private String name;
 
@@ -43,8 +43,8 @@ public class HaikyuuCharacter {
 
     private String imgUrl;
 
-    public void removeCharacterFromSchool(HaikyuuCharacter character) {
-        HaikyuuSchool charSchool = character.getSchool();
+    public void removeCharacterFromSchool(Character character) {
+        School charSchool = character.getSchool();
         if (character.getSchool() != null) {
             character.setSchool(null);
             System.out.println("Character " + character.getName() + " has been removed from " + charSchool.getName());

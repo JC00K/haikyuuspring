@@ -1,3 +1,3 @@
 package com.example.haikyuuspring.controller.dto;
 
-public record HaikyuuCharacterSummaryDTO () {}
+public record CharacterSummaryDTO() {}

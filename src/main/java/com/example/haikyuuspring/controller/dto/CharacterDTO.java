@@ -4,9 +4,8 @@ import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
-public record HaikyuuCharacterDTO(
+public record CharacterDTO(
         Long id,
         String name,
         Long schoolId,

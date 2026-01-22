@@ -1,11 +1,11 @@
 package com.example.haikyuuspring.controller.dto;
 
 
-public record HaikyuuSchoolDTO(
+public record SchoolDTO(
         Long id,
         String name,
         String prefecture,
-        HaikyuuTeamRosterDTO team,
+        RosterDTO team,
         String colors,
         String mascot,
         String imgUrl

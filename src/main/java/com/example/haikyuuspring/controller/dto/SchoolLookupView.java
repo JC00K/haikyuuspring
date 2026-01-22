@@ -1,6 +1,6 @@
 package com.example.haikyuuspring.controller.dto;
 
-public interface HaikyuuSchoolLookupView {
+public interface SchoolLookupView {
     Long getId();
     String getName();
 }

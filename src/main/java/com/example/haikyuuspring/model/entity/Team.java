@@ -10,15 +10,15 @@ import java.util.List;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class HaikyuuTeam {
+public class Team {
     private String teamName;
     private String teamMotto;
     private String colors;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<HaikyuuCharacter> characters;
+    private List<Character> characters;
 
-    public HaikyuuCharacter getCoach() {
+    public Character getCoach() {
         if (characters == null) return null;
         return characters.stream().filter(c -> c.getRole() == Role.COACH).findFirst().orElse(null);
     }

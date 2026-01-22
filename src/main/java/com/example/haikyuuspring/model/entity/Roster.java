@@ -17,23 +17,23 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class HaikyuuTeamRoster {
+public class Roster {
     @Id
     private Long id;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "school_id")
-    private HaikyuuSchool school;
+    private School school;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HaikyuuCharacter> members = new ArrayList<>();
+    private List<Character> members = new ArrayList<>();
 
     private List<Management> staffRoles = Arrays.asList(Management.ADVISOR, Management.MANAGER);
     private String teamName;
     private String teamMotto;
 
-    public void addCharacter(HaikyuuCharacter character) {
+    public void addCharacter(Character character) {
         if (staffRoles.contains(character.getManagementRole())) {
             members.add(character);
 
@@ -47,7 +47,7 @@ public class HaikyuuTeamRoster {
         character.setTeam(this);
     }
 
-    public void removeCharacterFromRoster(HaikyuuCharacter character) {
+    public void removeCharacterFromRoster(Character character) {
         if (staffRoles.contains(character.getManagementRole())) {
             members.remove(character);
             character.setTeam(null);
@@ -61,27 +61,27 @@ public class HaikyuuTeamRoster {
         }
     }
 
-    public List<HaikyuuCharacter> getPlayers() {
+    public List<Character> getPlayers() {
         return members.stream().filter((c) -> c.getRole() == Role.PLAYER).toList();
     }
 
-    public List<HaikyuuCharacter> getStaff() {
+    public List<Character> getStaff() {
         return members.stream().filter((c) -> staffRoles.contains(c.getManagementRole())).toList();
     }
 
-    public List<HaikyuuCharacter> getCoachesOnly() {
+    public List<Character> getCoachesOnly() {
         return members.stream().filter((c) -> c.getRole() == Role.COACH).toList();
     }
 
-    public List<HaikyuuCharacter> getManagersOnly() {
+    public List<Character> getManagersOnly() {
         return members.stream().filter((c) -> c.getManagementRole() == Management.MANAGER).toList();
     }
 
-    public List<HaikyuuCharacter> getAdvisorsOnly() {
+    public List<Character> getAdvisorsOnly() {
         return members.stream().filter((c) -> c.getManagementRole() == Management.ADVISOR).toList();
     }
 
-    public HaikyuuTeamRoster(HaikyuuSchool school) {
+    public Roster(School school) {
         this.school = school;
         if (school != null) {
             this.id = school.getId();

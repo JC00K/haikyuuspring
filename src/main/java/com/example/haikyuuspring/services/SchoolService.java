@@ -3,10 +3,9 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
-import com.example.haikyuuspring.model.entity.HaikyuuSchool;
-import com.example.haikyuuspring.model.entity.HaikyuuTeamRoster;
-import com.example.haikyuuspring.model.enums.Role;
-import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
+import com.example.haikyuuspring.model.entity.School;
+import com.example.haikyuuspring.model.entity.Roster;
+import com.example.haikyuuspring.repository.SchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,18 +14,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HaikyuuSchoolService {
-    private final HaikyuuSchoolRepository schoolRepository;
-    private final HaikyuuCharacterService characterService;
-    private final HaikyuuTeamService teamService;
+public class SchoolService {
+    private final SchoolRepository schoolRepository;
+    private final CharacterService characterService;
+    private final TeamService teamService;
 
     @Transactional
-    public HaikyuuSchoolDTO createSchool(HaikyuuSchoolDTO schoolInfo) {
+    public SchoolDTO createSchool(SchoolDTO schoolInfo) {
         if (schoolRepository.existsByName(schoolInfo.name())) {
             throw new ResourceDuplicateException(schoolInfo.name());
         }
-        HaikyuuSchool school = new HaikyuuSchool();
-        HaikyuuTeamRoster team = new HaikyuuTeamRoster();
+        School school = new School();
+        Roster team = new Roster();
 
         team.setTeamMotto(schoolInfo.team().motto());
         school.setColors(schoolInfo.colors());
@@ -37,24 +36,24 @@ public class HaikyuuSchoolService {
         school.setImgUrl(schoolInfo.imgUrl());
 
         team.setSchool(school);
-        HaikyuuSchool newSchool = schoolRepository.save(school);
+        School newSchool = schoolRepository.save(school);
 
         return convertToDto(newSchool);
     }
 
     @Transactional
     public void deleteSchool(Long schoolId) {
-        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
+        School school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
         schoolRepository.delete(school);
     }
 
-    public HaikyuuSchoolDTO getSchoolInfo(Long schoolId) {
-        HaikyuuSchool school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
+    public SchoolDTO getSchoolInfo(Long schoolId) {
+        School school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
         return convertToDto(school);
     }
 
-    public List<HaikyuuSchoolDTO> findByPrefecture(String prefecture) {
-        List<HaikyuuSchool> schools = schoolRepository.findByPrefectureIgnoreCase(prefecture);
+    public List<SchoolDTO> findByPrefecture(String prefecture) {
+        List<School> schools = schoolRepository.findByPrefectureIgnoreCase(prefecture);
 
         if (schools.isEmpty()) {
             throw new ResourceNotFoundException(prefecture);
@@ -63,15 +62,15 @@ public class HaikyuuSchoolService {
         return schools.stream().map(this::convertToDto).toList();
     }
 
-    public List<HaikyuuSchoolLookupDTO> lookupForDropdown() {
+    public List<SchoolLookupDTO> lookupForDropdown() {
         return schoolRepository.findAllProjectedBy().stream()
-                .map(view -> new HaikyuuSchoolLookupDTO(view.getId(), view.getName()))
+                .map(view -> new SchoolLookupDTO(view.getId(), view.getName()))
                 .toList();
     }
 
-    private HaikyuuSchoolDTO convertToDto(HaikyuuSchool school) {
-        List<HaikyuuCharacterDTO> players = null;
-        List<HaikyuuCharacterDTO> staff = null;
+    private SchoolDTO convertToDto(School school) {
+        List<CharacterDTO> players = null;
+        List<CharacterDTO> staff = null;
         String motto = " ";
 
 
@@ -81,11 +80,11 @@ public class HaikyuuSchoolService {
             motto = school.getTeam().getTeamMotto();
         }
 
-        return new HaikyuuSchoolDTO(
+        return new SchoolDTO(
                 school.getId(),
                 school.getName(),
                 school.getPrefecture(),
-                new HaikyuuTeamRosterDTO(players, staff, motto),
+                new RosterDTO(players, staff, motto),
                 motto,
                 school.getMascot(),
                 school.getImgUrl()

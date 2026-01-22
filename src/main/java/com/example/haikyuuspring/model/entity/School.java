@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "schools")
-public class HaikyuuSchool {
+public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,9 +20,9 @@ public class HaikyuuSchool {
     private String colors;
 
     @OneToOne(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HaikyuuTeamRoster team;
+    private Roster team;
 
-    public void addCharacter(HaikyuuCharacter character) {
+    public void addCharacter(Character character) {
         if (team != null) {
             team.addCharacter(character);
             character.setSchool(this);

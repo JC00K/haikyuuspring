@@ -1,8 +1,8 @@
 package com.example.haikyuuspring;
 
-import com.example.haikyuuspring.model.entity.HaikyuuSchool;
-import com.example.haikyuuspring.repository.HaikyuuSchoolRepository;
-import com.example.haikyuuspring.services.HaikyuuSchoolService;
+import com.example.haikyuuspring.model.entity.School;
+import com.example.haikyuuspring.repository.SchoolRepository;
+import com.example.haikyuuspring.services.SchoolService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,19 +15,19 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class HaikyuuSchoolServiceTest {
+class SchoolServiceTest {
 
     @Mock
-    private HaikyuuSchoolRepository schoolRepository;
+    private SchoolRepository schoolRepository;
 
     @InjectMocks
-    private HaikyuuSchoolService schoolService;
+    private SchoolService schoolService;
 
     @Test
     @DisplayName("Should successfully delete school and rely on cascade for roster")
     void deleteSchool_Success() {
         Long schoolId = 1L;
-        HaikyuuSchool school = new HaikyuuSchool();
+        School school = new School();
         school.setId(schoolId);
 
         when(schoolRepository.findById(schoolId)).thenReturn(Optional.of(school));
