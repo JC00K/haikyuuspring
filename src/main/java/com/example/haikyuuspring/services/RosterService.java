@@ -6,7 +6,7 @@ import com.example.haikyuuspring.model.entity.Character;
 import com.example.haikyuuspring.model.entity.Roster;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
-import com.example.haikyuuspring.repository.TeamRosterRepository;
+import com.example.haikyuuspring.repository.RosterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeamService {
-    private final TeamRosterRepository rosterRepository;
+public class RosterService {
+    private final RosterRepository rosterRepository;
     private final SchoolRepository schoolRepository;
     private final CharacterRepository characterRepository;
     private final CharacterService characterService;

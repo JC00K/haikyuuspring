@@ -17,7 +17,7 @@ import java.util.List;
 public class SchoolService {
     private final SchoolRepository schoolRepository;
     private final CharacterService characterService;
-    private final TeamService teamService;
+    private final RosterService teamService;
 
     @Transactional
     public SchoolDTO createSchool(SchoolDTO schoolInfo) {

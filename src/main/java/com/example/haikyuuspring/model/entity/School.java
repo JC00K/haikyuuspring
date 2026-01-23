@@ -20,12 +20,5 @@ public class School {
     private String colors;
 
     @OneToOne(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Roster team;
-
-    public void addCharacter(Character character) {
-        if (team != null) {
-            team.addCharacter(character);
-            character.setSchool(this);
-        }
-    }
+    private Roster roster;
 }

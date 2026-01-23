@@ -10,7 +10,7 @@ import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
-import com.example.haikyuuspring.repository.TeamRosterRepository;
+import com.example.haikyuuspring.repository.RosterRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class CharacterService {
     private final CharacterRepository characterRepository;
     private final SchoolRepository schoolRepository;
-    private final TeamRosterRepository teamRosterRepository;
+    private final RosterRepository teamRosterRepository;
 
     @Transactional
     public CharacterDTO createCharacter(CharacterDTO characterInfo) {

@@ -9,12 +9,10 @@ import lombok.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "characters")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "characters")
-public class Character {
+public abstract class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,26 +31,11 @@ public class Character {
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private StaffEnum managementRole;
-
-    @Enumerated(EnumType.STRING)
-    private Position position;
+    private Year year;
 
     private Integer age;
-    private Year year;
+
     private Double height;
 
     private String imgUrl;
-
-    public void removeCharacterFromSchool(Character character) {
-        School charSchool = character.getSchool();
-        if (character.getSchool() != null) {
-            character.setSchool(null);
-            System.out.println("Character " + character.getName() + " has been removed from " + charSchool.getName());
-        }
-        if (character.getRole() == Role.PLAYER) {
-            roster.removeCharacterFromRoster(character);
-            character.setRoster(null);
-        } else System.out.println("Character " + character.getName() + " is not a player, and it not associated with " + charSchool + "'s roster");
-    }
 }

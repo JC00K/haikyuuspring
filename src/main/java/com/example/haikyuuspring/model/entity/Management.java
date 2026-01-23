@@ -1,6 +1,6 @@
 package com.example.haikyuuspring.model.entity;
 
-import com.example.haikyuuspring.model.enums.Position;
+import com.example.haikyuuspring.model.enums.ManagementRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "alumni")
+@Table(name = "management")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Alumni extends Character {
-    private Boolean formerPlayer;
-
+public class Management extends Character{
     @Enumerated(EnumType.STRING)
-    private Position position;
+    private ManagementRole managementRole;
 
-    private Integer jerseyNumber;
 }
