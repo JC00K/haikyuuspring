@@ -3,8 +3,10 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
+import com.example.haikyuuspring.model.entity.Player;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.model.entity.Roster;
+import com.example.haikyuuspring.model.entity.Team;
 import com.example.haikyuuspring.repository.SchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,8 @@ import java.util.List;
 public class SchoolService {
     private final SchoolRepository schoolRepository;
     private final CharacterService characterService;
-    private final RosterService teamService;
+    private final PlayerService playerService;
+    private final RosterService rosterService;
 
     @Transactional
     public SchoolDTO createSchool(SchoolDTO schoolInfo) {
@@ -25,17 +28,18 @@ public class SchoolService {
             throw new ResourceDuplicateException(schoolInfo.name());
         }
         School school = new School();
-        Roster team = new Roster();
+        Roster roster = new Roster();
 
-        team.setTeamMotto(schoolInfo.team().motto());
+
+        school.setMotto(schoolInfo.motto());
         school.setColors(schoolInfo.colors());
         school.setName(schoolInfo.name());
         school.setPrefecture(schoolInfo.prefecture());
-        school.setTeam(team);
+        school.setRoster(roster);
         school.setMascot(schoolInfo.mascot());
         school.setImgUrl(schoolInfo.imgUrl());
 
-        team.setSchool(school);
+        roster.setSchool(school);
         School newSchool = schoolRepository.save(school);
 
         return convertToDto(newSchool);
@@ -69,22 +73,24 @@ public class SchoolService {
     }
 
     private SchoolDTO convertToDto(School school) {
-        List<CharacterDTO> players = null;
-        List<CharacterDTO> staff = null;
+        List<PlayerDTO> players = null;
+        List<CoachDTO> coaches = null;
+        List<ManagementDTO> management = null;
         String motto = " ";
 
 
-        if (school.getTeam() != null) {
-            players = school.getTeam().getPlayers().stream().map(characterService::convertToDTO).toList();
-            staff = school.getTeam().getStaff().stream().map(characterService::convertToDTO).toList();
-            motto = school.getTeam().getTeamMotto();
+        if (school.getRoster() != null) {
+            players = playerService.findAllPlayers().stream().map(this::convertToDTO).toList();
+            coaches = roster.getPlayers().stream().map(coachService::convertToDTO).toList();
+            management = roster.getManagement().stream().map(managementService::convertToDTO).toList();
+            motto = school.getMotto();
         }
 
         return new SchoolDTO(
                 school.getId(),
                 school.getName(),
                 school.getPrefecture(),
-                new RosterDTO(players, staff, motto),
+                new RosterDTO(players, coaches, management),
                 motto,
                 school.getMascot(),
                 school.getImgUrl()

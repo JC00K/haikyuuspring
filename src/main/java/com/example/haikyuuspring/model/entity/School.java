@@ -17,6 +17,7 @@ public class School {
     private String prefecture;
     private String imgUrl;
     private String mascot;
+    private String motto;
     private String colors;
 
     @OneToOne(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)

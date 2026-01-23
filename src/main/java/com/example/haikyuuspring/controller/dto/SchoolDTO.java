@@ -5,7 +5,8 @@ public record SchoolDTO(
         Long id,
         String name,
         String prefecture,
-        RosterDTO team,
+        RosterDTO roster,
+        String motto,
         String colors,
         String mascot,
         String imgUrl

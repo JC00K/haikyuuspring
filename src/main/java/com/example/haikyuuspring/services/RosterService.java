@@ -1,10 +1,10 @@
 package com.example.haikyuuspring.services;
 
-import com.example.haikyuuspring.controller.dto.CharacterDTO;
-import com.example.haikyuuspring.controller.dto.RosterDTO;
+import com.example.haikyuuspring.controller.dto.*;
+import com.example.haikyuuspring.model.entity.*;
 import com.example.haikyuuspring.model.entity.Character;
-import com.example.haikyuuspring.model.entity.Roster;
 import com.example.haikyuuspring.repository.CharacterRepository;
+import com.example.haikyuuspring.repository.PlayerRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
 import com.example.haikyuuspring.repository.RosterRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 public class RosterService {
     private final RosterRepository rosterRepository;
     private final SchoolRepository schoolRepository;
-    private final CharacterRepository characterRepository;
+    private final PlayerService playerService;
     private final CharacterService characterService;
 
 
@@ -28,18 +28,18 @@ public class RosterService {
 //        return roster.getRoster().stream().filter((p) -> p.getPosition() == position).toList();
 //    }
 
-    private List<CharacterDTO> getCoaches(Roster roster) {
-        List<Character> coaches = roster.getCoachesOnly();
-        return characterService.mapListToDTO(coaches);
+    private List<PlayerDTO> getPlayers(Roster roster) {
+        List<Player> players = roster.getPlayers();
+        return playerService.mapListToDTO(players);
     }
 
-    private List<CharacterDTO> getManagers(Roster roster) {
-        List<Character> managers = roster.getManagersOnly();
-        return characterService.mapListToDTO(managers);
+    private List<CoachDTO> getCoaches(Roster roster) {
+        List<Coach> coaches = roster.getCoaches();
+        return coachService.mapListToDTO(coaches);
     }
 
-    private List<CharacterDTO> getAdvisors(Roster roster) {
-        List<Character> advisors = roster.getAdvisorsOnly();
+    private List<ManagementDTO> getManagement(Roster roster) {
+        List<Management> advisors = roster.getAdvisorsOnly();
         return characterService.mapListToDTO(advisors);
     }
 

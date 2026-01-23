@@ -1,6 +1,7 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.CharacterDTO;
+import com.example.haikyuuspring.controller.dto.PlayerDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Character;
@@ -44,7 +45,6 @@ public class CharacterService {
         character.setYear(characterInfo.year());
         character.setHeight(characterInfo.height());
         character.setRole(characterInfo.role());
-        character.setPosition(characterInfo.position());
         character.setImgUrl(characterInfo.imgUrl());
 
         Character newCharacter = characterRepository.save(character);
@@ -103,10 +103,6 @@ public class CharacterService {
 
     public List<CharacterDTO> findByRole(Role role) {
         return findAllCharacters().stream().filter((character) -> character.role() == role).toList();
-    }
-
-    public List<CharacterDTO> findByPosition(Position position) {
-        return findAllCharacters().stream().filter((character) -> character.position() == position).toList();
     }
 
     public List<CharacterDTO> findCharacterByYear(Year year) {

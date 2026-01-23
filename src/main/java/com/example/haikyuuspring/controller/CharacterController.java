@@ -46,10 +46,10 @@ public class CharacterController {
         return ResponseEntity.ok(haikyuuCharacterService.findByRole(role));
     }
 
-    @GetMapping("/positions/{position}")
-    public ResponseEntity<List<CharacterDTO>> getCharactersByPosition(@PathVariable Position position) {
-        return ResponseEntity.ok(haikyuuCharacterService.findByPosition(position));
-    }
+//    @GetMapping("/positions/{position}")
+//    public ResponseEntity<List<CharacterDTO>> getCharactersByPosition(@PathVariable Position position) {
+//        return ResponseEntity.ok(haikyuuCharacterService.findByPosition(position));
+//    }
 
     @GetMapping("/greater_than_{height}")
     public ResponseEntity<List<CharacterDTO>> getCharactersByHeightGreaterThan(@PathVariable Double height) {
