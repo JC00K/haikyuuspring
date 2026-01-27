@@ -1,12 +1,15 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.*;
+import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.*;
 import com.example.haikyuuspring.model.entity.Character;
+import com.example.haikyuuspring.model.enums.Position;
+import com.example.haikyuuspring.model.enums.Year;
 import com.example.haikyuuspring.repository.CharacterRepository;
-import com.example.haikyuuspring.repository.PlayerRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
 import com.example.haikyuuspring.repository.RosterRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,47 +21,67 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RosterService {
     private final RosterRepository rosterRepository;
-    private final SchoolRepository schoolRepository;
+    private final CharacterRepository characterRepository;
     private final PlayerService playerService;
-    private final CharacterService characterService;
+    private final CoachService coachService;
+    private final ManagementService managementService;
 
+    @Transactional
+    public void removeCharacterFromRoster(Long rosterId, Long characterId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        Character character = characterRepository.findById(characterId)
+                .orElseThrow(() -> new ResourceNotFoundException(characterId));
 
-//    public List<HaikyuuCharacterDTO> findByPosition(Long schoolId, Position position) {
-//        HaikyuuTeamRoster roster = rosterRepository.findById(schoolId).orElseThrow(() -> new RuntimeException("No Roster found with ID " + schoolId));
-//        return roster.getRoster().stream().filter((p) -> p.getPosition() == position).toList();
-//    }
-
-    private List<PlayerDTO> getPlayers(Roster roster) {
-        List<Player> players = roster.getPlayers();
-        return playerService.mapListToDTO(players);
+        roster.removeCharacterFromRoster(character);
+        rosterRepository.save(roster);
     }
 
-    private List<CoachDTO> getCoaches(Roster roster) {
-        List<Coach> coaches = roster.getCoaches();
-        return coachService.mapListToDTO(coaches);
+    public RosterDTO getRosterById(Long rosterId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        return convertRosterToDTO(roster);
     }
 
-    private List<ManagementDTO> getManagement(Roster roster) {
-        List<Management> advisors = roster.getAdvisorsOnly();
-        return characterService.mapListToDTO(advisors);
+    public List<PlayerDTO> getRosterPlayers(Long rosterId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        return playerService.mapPlayerListToDTO(roster.getPlayers());
     }
 
 
-    private RosterDTO convertToDTO(Roster roster) {
-
-        List<Character> players = roster.getPlayers();
-        List<Character> staff = roster.getStaff();
-
-
-        List<CharacterDTO> mappedPlayers = characterService.mapListToDTO(players);
-        List<CharacterDTO> mappedStaff = characterService.mapListToDTO(staff);
-
-
-        return new RosterDTO(
-                mappedPlayers,
-                mappedStaff,
-                roster.getTeamMotto()
-        );
+    public List<CoachDTO> getRosterCoaches(Long rosterId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        return coachService.mapCoachListToDTO(roster.getCoaches());
     }
 
+    public List<ManagementDTO> getRosterManagement(Long rosterId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        return managementService.mapManagementListToDTO(roster.getManagement());
+    }
+
+    public List<PlayerDTO> findPlayersByPosition(Long rosterId, Position position) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        return roster.getPlayers().stream()
+                .filter(player -> player.getPosition() == position)
+                .map(playerService::convertPlayerToDTO)
+                .toList();
+    }
+
+    public List<RosterDTO> mapRosterListToDTO(List<Roster> rosters) {
+        return rosters.stream()
+                .map(this::convertRosterToDTO)
+                .toList();
+    }
+
+    private RosterDTO convertRosterToDTO(Roster roster) {
+        List<PlayerDTO> mappedPlayers = playerService.mapPlayerListToDTO(roster.getPlayers());
+        List<CoachDTO> mappedCoaches = coachService.mapCoachListToDTO(roster.getCoaches());
+        List<ManagementDTO> mappedManagement = managementService.mapManagementListToDTO(roster.getManagement());
+
+        return new RosterDTO(mappedPlayers, mappedCoaches, mappedManagement);
+    }
 }

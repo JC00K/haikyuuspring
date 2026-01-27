@@ -1,7 +1,7 @@
 package com.example.haikyuuspring.controller.dto;
 
 import com.example.haikyuuspring.model.enums.CoachRole;
-import com.example.haikyuuspring.model.enums.Position;
+import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.model.enums.Role;
 
 public record CoachDTO(
@@ -10,9 +10,8 @@ public record CoachDTO(
         Long schoolId,
         String schoolName,
         Role role,
-        Position position,
         Integer age,
-        String coachingStyle,
+        CoachingStyle coachingStyle,
         CoachRole coachRole
 ) {
 }

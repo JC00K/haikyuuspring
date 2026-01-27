@@ -5,6 +5,7 @@ public record FanDTO(
         String name,
         Long schoolId,
         String schoolName,
-        Boolean formerCoach
+        Boolean formerCoach,
+        String imgUrl
 ) {
 }

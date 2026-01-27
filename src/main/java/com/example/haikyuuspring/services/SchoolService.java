@@ -6,7 +6,6 @@ import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Player;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.model.entity.Roster;
-import com.example.haikyuuspring.model.entity.Team;
 import com.example.haikyuuspring.repository.SchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ public class SchoolService {
     private final SchoolRepository schoolRepository;
     private final CharacterService characterService;
     private final PlayerService playerService;
+    private final CoachService coachService;
+    private final ManagementService managementService;
     private final RosterService rosterService;
 
     @Transactional
@@ -31,18 +32,18 @@ public class SchoolService {
         Roster roster = new Roster();
 
 
-        school.setMotto(schoolInfo.motto());
-        school.setColors(schoolInfo.colors());
         school.setName(schoolInfo.name());
         school.setPrefecture(schoolInfo.prefecture());
         school.setRoster(roster);
+        school.setMotto(schoolInfo.motto());
+        school.setColors(schoolInfo.colors());
         school.setMascot(schoolInfo.mascot());
         school.setImgUrl(schoolInfo.imgUrl());
 
         roster.setSchool(school);
         School newSchool = schoolRepository.save(school);
 
-        return convertToDto(newSchool);
+        return convertSchoolToDto(newSchool);
     }
 
     @Transactional
@@ -53,7 +54,7 @@ public class SchoolService {
 
     public SchoolDTO getSchoolInfo(Long schoolId) {
         School school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
-        return convertToDto(school);
+        return convertSchoolToDto(school);
     }
 
     public List<SchoolDTO> findByPrefecture(String prefecture) {
@@ -63,7 +64,7 @@ public class SchoolService {
             throw new ResourceNotFoundException(prefecture);
         }
 
-        return schools.stream().map(this::convertToDto).toList();
+        return schools.stream().map(this::convertSchoolToDto).toList();
     }
 
     public List<SchoolLookupDTO> lookupForDropdown() {
@@ -72,17 +73,16 @@ public class SchoolService {
                 .toList();
     }
 
-    private SchoolDTO convertToDto(School school) {
+    private SchoolDTO convertSchoolToDto(School school) {
         List<PlayerDTO> players = null;
         List<CoachDTO> coaches = null;
         List<ManagementDTO> management = null;
         String motto = " ";
 
-
         if (school.getRoster() != null) {
-            players = playerService.findAllPlayers().stream().map(this::convertToDTO).toList();
-            coaches = roster.getPlayers().stream().map(coachService::convertToDTO).toList();
-            management = roster.getManagement().stream().map(managementService::convertToDTO).toList();
+            players = playerService.mapPlayerListToDTO(school.getRoster().getPlayers());
+            coaches = coachService.mapCoachListToDTO(school.getRoster().getCoaches());
+            management = managementService.mapManagementListToDTO(school.getRoster().getManagement());
             motto = school.getMotto();
         }
 
@@ -92,9 +92,9 @@ public class SchoolService {
                 school.getPrefecture(),
                 new RosterDTO(players, coaches, management),
                 motto,
+                school.getColors(),
                 school.getMascot(),
                 school.getImgUrl()
         );
     }
-
 }

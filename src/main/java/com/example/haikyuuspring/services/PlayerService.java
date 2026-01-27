@@ -42,28 +42,32 @@ public class PlayerService {
 
         Player newPlayer = playerRepository.save(player);
 
-        return convertToDTO(newPlayer);
+        return convertPlayerToDTO(newPlayer);
     }
 
     public List<PlayerDTO> findAllPlayers() {
-        return mapListToDTO(playerRepository.findAll());
+        return mapPlayerListToDTO(playerRepository.findAll());
     }
 
     public List<PlayerDTO> findByPosition(Position position) {
         return findAllPlayers().stream().filter((player) -> player.position() == position).toList();
     }
 
+    public List<PlayerDTO> findByYearAndPosition(Year year, Position position) {
+        return findAllPlayers().stream().filter((player) -> player.year() == year && player.position() == position).toList();
+    }
+
     public List<PlayerDTO> findByJerseyNumber(Integer jerseyNumber) {
         return findAllPlayers().stream().filter((player) -> player.jerseyNumber().equals(jerseyNumber)).toList();
     }
 
-    public List<PlayerDTO> mapListToDTO(List<Player> players) {
+    public List<PlayerDTO> mapPlayerListToDTO(List<Player> players) {
         return players.stream()
-                .map(this::convertToDTO)
+                .map(this::convertPlayerToDTO)
                 .toList();
     }
 
-    public PlayerDTO convertToDTO(Player player) {
+    public PlayerDTO convertPlayerToDTO(Player player) {
 
         return new PlayerDTO(
                 player.getId(),
@@ -73,6 +77,7 @@ public class PlayerService {
                 player.getRole(),
                 player.getPosition(),
                 player.getAge(),
+                player.getYear(),
                 player.getJerseyNumber(),
                 player.getImgUrl()
         );

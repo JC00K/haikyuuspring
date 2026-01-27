@@ -9,6 +9,7 @@ public record AlumniDTO(
         String schoolName,
         Boolean formerPlayer,
         Position position,
-        Integer jerseyNumber
+        Integer jerseyNumber,
+        String imgUrl
 ) {
 }

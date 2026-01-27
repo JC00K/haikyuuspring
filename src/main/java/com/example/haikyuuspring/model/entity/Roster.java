@@ -34,5 +34,14 @@ public class Roster {
     @OneToMany(mappedBy = "roster")
     private List<Management> management = new ArrayList<>();
 
-
+    public void removeCharacterFromRoster(Character character) {
+        character.setRoster(null);
+        switch (character) {
+            case Player player -> this.players.remove(character);
+            case Coach coach -> this.coaches.remove(character);
+            case Management management1 -> this.management.remove(character);
+            default -> {
+            }
+        }
+    }
 }

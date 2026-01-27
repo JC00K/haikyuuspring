@@ -1,7 +1,5 @@
 package com.example.haikyuuspring.model.entity;
 
-import com.example.haikyuuspring.model.enums.StaffEnum;
-import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
 import jakarta.persistence.*;

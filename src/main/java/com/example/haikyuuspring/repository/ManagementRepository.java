@@ -1,4 +1,7 @@
 package com.example.haikyuuspring.repository;
 
-public interface ManagementRepository {
+import com.example.haikyuuspring.model.entity.Management;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ManagementRepository extends JpaRepository<Management, Long> {
 }
