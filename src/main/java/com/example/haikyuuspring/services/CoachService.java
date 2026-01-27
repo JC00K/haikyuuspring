@@ -1,14 +1,9 @@
 package com.example.haikyuuspring.services;
 
-
 import com.example.haikyuuspring.controller.dto.CoachDTO;
-import com.example.haikyuuspring.controller.dto.ManagementDTO;
-import com.example.haikyuuspring.controller.dto.PlayerDTO;
-import com.example.haikyuuspring.controller.dto.RosterDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Coach;
-import com.example.haikyuuspring.model.entity.Roster;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.CoachRepository;

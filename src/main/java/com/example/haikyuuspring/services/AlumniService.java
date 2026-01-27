@@ -1,11 +1,9 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.AlumniDTO;
-import com.example.haikyuuspring.controller.dto.FanDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Alumni;
-import com.example.haikyuuspring.model.entity.Fan;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.repository.AlumniRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;

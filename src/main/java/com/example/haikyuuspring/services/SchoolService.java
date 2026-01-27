@@ -3,7 +3,6 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
-import com.example.haikyuuspring.model.entity.Player;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.model.entity.Roster;
 import com.example.haikyuuspring.repository.SchoolRepository;
@@ -17,11 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchoolService {
     private final SchoolRepository schoolRepository;
-    private final CharacterService characterService;
     private final PlayerService playerService;
     private final CoachService coachService;
     private final ManagementService managementService;
-    private final RosterService rosterService;
 
     @Transactional
     public SchoolDTO createSchool(SchoolDTO schoolInfo) {

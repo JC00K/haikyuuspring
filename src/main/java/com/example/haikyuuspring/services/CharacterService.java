@@ -1,17 +1,13 @@
 package com.example.haikyuuspring.services;
 
 import com.example.haikyuuspring.controller.dto.CharacterDTO;
-import com.example.haikyuuspring.controller.dto.PlayerDTO;
-import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Character;
 import com.example.haikyuuspring.model.entity.School;
-import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.model.enums.Year;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
-import com.example.haikyuuspring.repository.RosterRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,8 @@
 package com.example.haikyuuspring.services;
 
-
-import com.example.haikyuuspring.controller.dto.CharacterDTO;
 import com.example.haikyuuspring.controller.dto.PlayerDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
-import com.example.haikyuuspring.model.entity.Character;
 import com.example.haikyuuspring.model.entity.Player;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.model.enums.Position;
