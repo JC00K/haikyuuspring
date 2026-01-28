@@ -18,39 +18,36 @@ import java.util.List;
 @RequestMapping("/api/v1/schools")
 @RequiredArgsConstructor
 public class SchoolController {
-    private final CharacterService haikyuuCharacterService;
-    private final SchoolService haikyuuSchoolService;
+    private final CharacterService characterService;
+    private final SchoolService schoolService;
 
     @GetMapping
     public ResponseEntity<List<SchoolLookupDTO>> getSchoolLookup() {
-        return ResponseEntity.ok(haikyuuSchoolService.lookupForDropdown());
+        return ResponseEntity.ok(schoolService.lookupForDropdown());
     }
 
     @GetMapping("/{school}/info")
     public ResponseEntity<SchoolDTO> getSchoolInfo(@PathVariable Long school) {
-        SchoolDTO schoolInfo = haikyuuSchoolService.getSchoolInfo(school);
-        return ResponseEntity.ok(schoolInfo);
+        return ResponseEntity.ok(schoolService.getSchoolInfo(school));
     }
 
     @GetMapping("/{school}/characters")
     public ResponseEntity<List<CharacterDTO>> getCharactersBySchool(@PathVariable String school) {
-        List<CharacterDTO> characters = haikyuuCharacterService.findBySchool(school);
-        return ResponseEntity.ok(characters);
+        return ResponseEntity.ok(characterService.findBySchool(school));
     }
 
     @GetMapping("/{prefecture}")
     public ResponseEntity<List<SchoolDTO>> getSchoolsByPrefecture(@PathVariable String prefecture) {
-        List<SchoolDTO> characters = haikyuuSchoolService.findByPrefecture(prefecture);
-        return ResponseEntity.ok(characters);
+        return ResponseEntity.ok(schoolService.findByPrefecture(prefecture));
     }
 
     @PostMapping
     public ResponseEntity<SchoolDTO> createSchool(@Valid @RequestBody SchoolDTO schoolDTO) {
-        return new ResponseEntity<>(haikyuuSchoolService.createSchool(schoolDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(schoolService.createSchool(schoolDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping
     public void deleteSchool(Long schoolId) {
-        haikyuuSchoolService.deleteSchool(schoolId);
+        schoolService.deleteSchool(schoolId);
     }
 }

@@ -9,10 +9,12 @@ import com.example.haikyuuspring.repository.AlumniRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;
 
 import com.example.haikyuuspring.repository.SchoolRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,19 +24,37 @@ public class AlumniService {
     private final CharacterRepository characterRepository;
     private final SchoolRepository schoolRepository;
 
+    @Transactional
     public AlumniDTO createAlumni(AlumniDTO alumniInfo) {
         if (characterRepository.existsByName(alumniInfo.name())) {
             throw new ResourceDuplicateException(alumniInfo.name());
         }
         Alumni alumni = new Alumni();
+        alumni.setName(alumniInfo.name());
+        alumni.setImgUrl(alumniInfo.imgUrl());
 
         if (alumniInfo.schoolId() != null) {
             School school = schoolRepository.findById(alumniInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(alumniInfo.schoolId()));
             alumni.setSchool(school);
         }
 
-        Alumni newAlumni = alumniRepository.save(alumni);
+        if (Boolean.TRUE.equals(alumniInfo.formerPlayer())) {
+            if (alumniInfo.position() == null) {
+            throw new RuntimeException("Former players must have a position");
+            }
+            alumni.setFormerPlayer(true);
+            alumni.setPosition(alumniInfo.position());
+            alumni.setJerseyNumber(alumniInfo.jerseyNumber());
+        } else {
+            if (alumniInfo.position() != null || alumniInfo.jerseyNumber() != null) {
+                throw new IllegalArgumentException("Non-Former players cannot have a position or jersey number");
+            }
+            alumni.setFormerPlayer(false);
+            alumni.setPosition(null);
+            alumni.setJerseyNumber(null);
+        }
 
+        Alumni newAlumni = alumniRepository.save(alumni);
         return convertAlumniToDTO(newAlumni);
     }
 
@@ -46,6 +66,10 @@ public class AlumniService {
         return findAllAlumni().stream().filter((alumni) -> alumni.formerPlayer() == true).toList();
     }
 
+    public List<AlumniDTO> findAlumniBySchoolId(Long schoolId) {
+        return findAllAlumni().stream().filter((alumni) -> Objects.equals(alumni.schoolId(), schoolId)).toList();
+    }
+
     public List<AlumniDTO> mapAlumniListToDTO(List<Alumni> alumni) {
         return alumni.stream()
                 .map(this::convertAlumniToDTO)
@@ -53,17 +77,18 @@ public class AlumniService {
     }
 
     private AlumniDTO convertAlumniToDTO(Alumni alumni) {
-
-
         return new AlumniDTO(
                 alumni.getId(),
                 alumni.getName(),
+                alumni.getHeight(),
+                alumni.getAge(),
+                alumni.getRole(),
                 Optional.ofNullable(alumni.getSchool()).map(School::getId).orElse(null),
                 Optional.ofNullable(alumni.getSchool()).map(School::getName).orElse(null),
+                alumni.getImgUrl(),
                 alumni.getFormerPlayer(),
                 alumni.getPosition(),
-                alumni.getJerseyNumber(),
-                alumni.getImgUrl()
+                alumni.getJerseyNumber()
         );
     }
 }

@@ -32,6 +32,15 @@ public class PlayerService {
 
         Player player = new Player();
 
+        player.setName(playerInfo.name());
+        player.setHeight(playerInfo.height());
+        player.setAge(playerInfo.age());
+        player.setYear(playerInfo.year());
+        player.setRole(playerInfo.role());
+        player.setImgUrl(playerInfo.imgUrl());
+        player.setPosition(playerInfo.position());
+        player.setJerseyNumber(playerInfo.jerseyNumber());
+
         if (playerInfo.schoolId() != null) {
             School school = schoolRepository.findById(playerInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(playerInfo.schoolId()));
             player.setSchool(school);
@@ -69,14 +78,15 @@ public class PlayerService {
         return new PlayerDTO(
                 player.getId(),
                 player.getName(),
-                Optional.ofNullable(player.getSchool()).map(School::getId).orElse(null),
-                Optional.ofNullable(player.getSchool()).map(School::getName).orElse(null),
-                player.getRole(),
-                player.getPosition(),
+                player.getHeight(),
                 player.getAge(),
                 player.getYear(),
-                player.getJerseyNumber(),
-                player.getImgUrl()
+                player.getRole(),
+                Optional.ofNullable(player.getSchool()).map(School::getId).orElse(null),
+                Optional.ofNullable(player.getSchool()).map(School::getName).orElse(null),
+                player.getImgUrl(),
+                player.getPosition(),
+                player.getJerseyNumber()
         );
     }
 }

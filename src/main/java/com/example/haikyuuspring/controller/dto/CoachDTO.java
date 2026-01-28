@@ -7,11 +7,13 @@ import com.example.haikyuuspring.model.enums.Role;
 public record CoachDTO(
         Long id,
         String name,
+        Double height,
+        Integer age,
+        Role role,
         Long schoolId,
         String schoolName,
-        Role role,
-        Integer age,
-        CoachingStyle coachingStyle,
-        CoachRole coachRole
+        String imgUrl,
+        CoachRole coachRole,
+        CoachingStyle coachingStyle
 ) {
 }

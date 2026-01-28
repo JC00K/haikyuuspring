@@ -25,7 +25,7 @@ public class RosterService {
     private final ManagementService managementService;
 
     @Transactional
-    public void removeCharacterFromRoster(Long rosterId, Long characterId) {
+    public RosterDTO removeCharacterFromRoster(Long rosterId, Long characterId) {
         Roster roster = rosterRepository.findById(rosterId)
                 .orElseThrow(() -> new ResourceNotFoundException(rosterId));
         Character character = characterRepository.findById(characterId)
@@ -33,6 +33,7 @@ public class RosterService {
 
         roster.removeCharacterFromRoster(character);
         rosterRepository.save(roster);
+        return convertRosterToDTO(roster);
     }
 
     public RosterDTO getRosterById(Long rosterId) {

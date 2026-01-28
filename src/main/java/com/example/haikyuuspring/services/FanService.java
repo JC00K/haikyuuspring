@@ -8,6 +8,7 @@ import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.FanRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,18 @@ public class FanService {
     private final CharacterRepository characterRepository;
     private final SchoolRepository schoolRepository;
 
+    @Transactional
     public FanDTO createFan(FanDTO fanInfo) {
         if (characterRepository.existsByName(fanInfo.name())) {
             throw new ResourceDuplicateException(fanInfo.name());
         }
         Fan fan = new Fan();
+
+        fan.setName(fanInfo.name());
+        fan.setAge(fanInfo.age());
+        fan.setImgUrl(fanInfo.imgUrl());
+        fan.setFormerCoach(fanInfo.formerCoach());
+        fan.setCoachingStyle(fanInfo.coachingStyle());
 
         if (fanInfo.schoolId() != null) {
             School school = schoolRepository.findById(fanInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(fanInfo.schoolId()));
@@ -53,10 +61,14 @@ public class FanService {
         return new FanDTO(
                 fan.getId(),
                 fan.getName(),
+                fan.getHeight(),
+                fan.getAge(),
+                fan.getRole(),
                 Optional.ofNullable(fan.getSchool()).map(School::getId).orElse(null),
                 Optional.ofNullable(fan.getSchool()).map(School::getName).orElse(null),
+                fan.getImgUrl(),
                 fan.getFormerCoach(),
-                fan.getImgUrl()
+                fan.getCoachingStyle()
         );
     }
 }

@@ -1,13 +1,17 @@
 package com.example.haikyuuspring.services;
 
+import com.example.haikyuuspring.controller.dto.CharacterDTO;
 import com.example.haikyuuspring.controller.dto.CoachDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Coach;
 import com.example.haikyuuspring.model.entity.School;
+import com.example.haikyuuspring.model.enums.CoachRole;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.CoachRepository;
 import com.example.haikyuuspring.repository.SchoolRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +24,26 @@ public class CoachService {
     private final CoachRepository coachRepository;
     private final CharacterRepository characterRepository;
     private final SchoolRepository schoolRepository;
+    private final CharacterService characterService;
 
+    @Transactional
     public CoachDTO createCoach(CoachDTO coachInfo) {
         if (characterRepository.existsByName(coachInfo.name())) {
             throw new ResourceDuplicateException(coachInfo.name());
         }
+
         Coach coach = new Coach();
+
+        coach.setName(coachInfo.name());
+        coach.setHeight(coachInfo.height());
+        coach.setAge(coachInfo.age());
+        coach.setRole(coachInfo.role());
+        coach.setImgUrl(coachInfo.imgUrl());
+        coach.setCoachRole(coachInfo.coachRole());
+
+        if (coachInfo.coachRole() == CoachRole.ASSISTANT) {
+            coach.setCoachingStyle(null);
+        } else coach.setCoachingStyle(coachInfo.coachingStyle());
 
         if (coachInfo.schoolId() != null) {
             School school = schoolRepository.findById(coachInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(coachInfo.schoolId()));
@@ -36,7 +54,6 @@ public class CoachService {
 
         return convertCoachToDTO(newCoach);
     }
-
 
     public List<CoachDTO> mapCoachListToDTO(List<Coach> coaches) {
         return coaches.stream()
@@ -50,12 +67,14 @@ public class CoachService {
         return new CoachDTO(
                 coach.getId(),
                 coach.getName(),
+                coach.getHeight(),
+                coach.getAge(),
+                coach.getRole(),
                 Optional.ofNullable(coach.getSchool()).map(School::getId).orElse(null),
                 Optional.ofNullable(coach.getSchool()).map(School::getName).orElse(null),
-                coach.getRole(),
-                coach.getAge(),
-                coach.getCoachingStyle(),
-                coach.getCoachRole()
+                coach.getImgUrl(),
+                coach.getCoachRole(),
+                coach.getCoachingStyle()
         );
     }
 }

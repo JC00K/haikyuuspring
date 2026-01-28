@@ -1,15 +1,14 @@
 package com.example.haikyuuspring.controller;
 
-import com.example.haikyuuspring.controller.dto.CharacterDTO;
 import com.example.haikyuuspring.controller.dto.PlayerDTO;
 import com.example.haikyuuspring.model.enums.Position;
+import com.example.haikyuuspring.model.enums.Year;
 import com.example.haikyuuspring.services.PlayerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,13 +18,28 @@ import java.util.List;
 public class PlayerController {
     private final PlayerService playerService;
 
-    @GetMapping("position/{position}")
-    public ResponseEntity<List<PlayerDTO>> getPlayersByPosition(@PathVariable Position position) {
+    @GetMapping
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
+        return ResponseEntity.ok(playerService.findAllPlayers());
+    }
+
+    @GetMapping("/position/{position}")
+    public ResponseEntity<List<PlayerDTO>> getPosition(@PathVariable Position position) {
         return ResponseEntity.ok(playerService.findByPosition(position));
     }
 
-    @GetMapping("jerseyNumber/{jerseyNumber}")
-    public ResponseEntity<List<PlayerDTO>> getPlayersByJerseyNumber(@PathVariable Integer jerseyNumber) {
+    @GetMapping("/jersey_number/{jerseyNumber}")
+    public ResponseEntity<List<PlayerDTO>> getJerseyNumber(@PathVariable Integer jerseyNumber) {
         return ResponseEntity.ok(playerService.findByJerseyNumber(jerseyNumber));
+    }
+
+    @GetMapping("/find_by_year_and_position/{year}_{position}")
+    public ResponseEntity<List<PlayerDTO>> getYearAndPosition(@PathVariable Year year, @PathVariable Position position) {
+        return ResponseEntity.ok(playerService.findByYearAndPosition(year, position));
+    }
+
+    @PostMapping
+    public ResponseEntity<PlayerDTO> createPlayer(@Valid @RequestBody PlayerDTO playerDTO) {
+        return new ResponseEntity<>(playerService.createPlayer(playerDTO), HttpStatus.CREATED);
     }
 }
