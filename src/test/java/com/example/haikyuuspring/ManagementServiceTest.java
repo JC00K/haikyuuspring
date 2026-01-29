@@ -2,6 +2,7 @@ package com.example.haikyuuspring;
 
 import com.example.haikyuuspring.controller.dto.ManagementDTO;
 import com.example.haikyuuspring.model.enums.ManagementRole;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.ManagementRepository;
 import com.example.haikyuuspring.services.ManagementService;
@@ -29,10 +30,6 @@ class ManagementServiceTest {
     @Test
     @DisplayName("Create management (ADVISOR/MANAGER) (stub)")
     void createManagement_Success() {
-        ManagementDTO dto = new ManagementDTO(null, "Mgmt A", 1L, "School", null, 45, ManagementRole.ADVISOR, null);
-        when(characterRepository.existsByName("Mgmt A")).thenReturn(false);
-
-        // In a full implementation, you'd call: managementService.createManagement(dto);
-        // verify(managementRepository).save(any(Management.class));
+        ManagementDTO dto = new ManagementDTO(null, "Mgmt A", 150.7, 15, null, Role.MANAGEMENT, 2L, "School", "https://example.url/image.png", ManagementRole.ADVISOR);
     }
 }

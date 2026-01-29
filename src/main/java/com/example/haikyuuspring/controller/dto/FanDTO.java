@@ -14,8 +14,6 @@ public record FanDTO(
         Long schoolId,
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         String schoolName,
-        String imgUrl,
-        Boolean formerCoach,
-        CoachingStyle coachingStyle
+        String imgUrl
 ) {
 }

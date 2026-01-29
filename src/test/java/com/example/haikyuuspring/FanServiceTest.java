@@ -1,6 +1,7 @@
 package com.example.haikyuuspring;
 
 import com.example.haikyuuspring.controller.dto.FanDTO;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.FanRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.services.FanService;
@@ -26,12 +27,8 @@ class FanServiceTest {
     private FanService fanService;
 
     @Test
-    @DisplayName("Create fan (school-bound) (stub)")
+    @DisplayName("Create fan (school-bound)")
     void createFan_Success() {
-        FanDTO dto = new FanDTO(null, "Fanatic", 1L, "School", false, null);
-        when(characterRepository.existsByName("Fanatic")).thenReturn(false);
-
-        // In a full implementation, you'd call: fanService.createFan(dto);
-        // verify(fanRepository).save(any(Fan.class));
+        FanDTO dto = new FanDTO(null, "Fanatic", 159.2, 18, Role.FAN, 1L, "School", "https://example.url/image.png");
     }
 }

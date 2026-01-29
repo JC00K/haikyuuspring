@@ -32,8 +32,9 @@ public class FanService {
         fan.setName(fanInfo.name());
         fan.setAge(fanInfo.age());
         fan.setImgUrl(fanInfo.imgUrl());
-        fan.setFormerCoach(fanInfo.formerCoach());
-        fan.setCoachingStyle(fanInfo.coachingStyle());
+        fan.setHeight(fanInfo.height());
+        fan.setRole(fanInfo.role());
+
 
         if (fanInfo.schoolId() != null) {
             School school = schoolRepository.findById(fanInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(fanInfo.schoolId()));
@@ -66,9 +67,7 @@ public class FanService {
                 fan.getRole(),
                 Optional.ofNullable(fan.getSchool()).map(School::getId).orElse(null),
                 Optional.ofNullable(fan.getSchool()).map(School::getName).orElse(null),
-                fan.getImgUrl(),
-                fan.getFormerCoach(),
-                fan.getCoachingStyle()
+                fan.getImgUrl()
         );
     }
 }

@@ -1,15 +1,11 @@
 package com.example.haikyuuspring.model.entity;
 
 
-import com.example.haikyuuspring.model.enums.StaffEnum;
-import com.example.haikyuuspring.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -33,6 +29,21 @@ public class Roster {
 
     @OneToMany(mappedBy = "roster")
     private List<Management> management = new ArrayList<>();
+
+    public void addPlayerToRoster(Player player) {
+        player.setRoster(this);
+        this.players.add(player);
+    }
+
+    public void addCoachToRoster(Coach coach) {
+        coach.setRoster(this);
+        this.coaches.add(coach);
+    }
+
+    public void addManagementToRoster(Management management) {
+        management.setRoster(this);
+        this.management.add(management);
+    }
 
     public void removeCharacterFromRoster(Character character) {
         character.setRoster(null);

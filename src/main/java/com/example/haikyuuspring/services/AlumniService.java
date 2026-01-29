@@ -5,6 +5,7 @@ import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Alumni;
 import com.example.haikyuuspring.model.entity.School;
+import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.repository.AlumniRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;
 
@@ -32,6 +33,9 @@ public class AlumniService {
         Alumni alumni = new Alumni();
         alumni.setName(alumniInfo.name());
         alumni.setImgUrl(alumniInfo.imgUrl());
+        alumni.setHeight(alumniInfo.height());
+        alumni.setAge(alumniInfo.age());
+        alumni.setRole(alumniInfo.role());
 
         if (alumniInfo.schoolId() != null) {
             School school = schoolRepository.findById(alumniInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(alumniInfo.schoolId()));
@@ -52,6 +56,14 @@ public class AlumniService {
             alumni.setFormerPlayer(false);
             alumni.setPosition(null);
             alumni.setJerseyNumber(null);
+        }
+
+        if (Boolean.TRUE.equals(alumniInfo.formerCoach())) {
+            alumni.setFormerCoach(true);
+            alumni.setCoachingStyle(alumniInfo.coachingStyle());
+        } else {
+            alumni.setFormerCoach(false);
+            alumni.setCoachingStyle(CoachingStyle.NONCOACH);
         }
 
         Alumni newAlumni = alumniRepository.save(alumni);
@@ -88,7 +100,9 @@ public class AlumniService {
                 alumni.getImgUrl(),
                 alumni.getFormerPlayer(),
                 alumni.getPosition(),
-                alumni.getJerseyNumber()
+                alumni.getJerseyNumber(),
+                alumni.getFormerCoach(),
+                alumni.getCoachingStyle()
         );
     }
 }

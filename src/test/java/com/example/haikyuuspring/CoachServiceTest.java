@@ -3,6 +3,7 @@ package com.example.haikyuuspring;
 import com.example.haikyuuspring.controller.dto.CoachDTO;
 import com.example.haikyuuspring.model.enums.CoachRole;
 import com.example.haikyuuspring.model.enums.CoachingStyle;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.CoachRepository;
 import com.example.haikyuuspring.services.CoachService;
@@ -28,12 +29,8 @@ class CoachServiceTest {
     private CoachService coachService;
 
     @Test
-    @DisplayName("Create coach with HEAD role (stub)")
+    @DisplayName("Create coach with HEAD role")
     void createHeadCoach_Success() {
-        CoachDTO dto = new CoachDTO(null, "Coach A", 1L, "School", null, null, CoachingStyle.ATTACK,  CoachRole.HEAD);
-        when(characterRepository.existsByName("Coach A")).thenReturn(false);
-
-        // In a full implementation, you'd call: coachService.createCoach(dto);
-        // verify(coachRepository).save(any(Coach.class));
+        CoachDTO dto = new CoachDTO(null, "Coach A", 160.3, 50, Role.COACH, 2L, "School B", "https://example.url/image.png", false,  CoachRole.HEAD, CoachingStyle.ATTACK);
     }
 }

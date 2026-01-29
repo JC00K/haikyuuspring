@@ -17,7 +17,7 @@ public class FanController {
     private final FanService fanService;
 
     @GetMapping
-    public ResponseEntity<List<FanDTO>> getAlLFans() {
+    public ResponseEntity<List<FanDTO>> getAllFans() {
         return ResponseEntity.ok(fanService.findAllFans());
     }
 

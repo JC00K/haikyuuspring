@@ -16,6 +16,7 @@ public record CoachDTO(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         String schoolName,
         String imgUrl,
+        Boolean isRetired,
         CoachRole coachRole,
         CoachingStyle coachingStyle
 ) {

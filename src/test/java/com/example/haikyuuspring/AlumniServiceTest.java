@@ -1,7 +1,9 @@
 package com.example.haikyuuspring;
 
 import com.example.haikyuuspring.controller.dto.AlumniDTO;
+import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.model.enums.Position;
+import com.example.haikyuuspring.model.enums.Role;
 import com.example.haikyuuspring.repository.AlumniRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.services.AlumniService;
@@ -29,7 +31,7 @@ class AlumniServiceTest {
     @Test
     @DisplayName("Create alumni (former player optional) (stub)")
     void createAlumni_Success() {
-        AlumniDTO dto = new AlumniDTO(null, "Alumni A", 1L, "School", true, Position.SETTER, 12, null);
+        AlumniDTO dto = new AlumniDTO(null, "Alumni A", 160.4, 20, Role.ALUMNI, 2L, "School C", "https://example.url/image.png", true, Position.SETTER, 4, false, CoachingStyle.NONCOACH);
         when(characterRepository.existsByName("Alumni A")).thenReturn(false);
 
         // alumniService.createAlumni(dto);

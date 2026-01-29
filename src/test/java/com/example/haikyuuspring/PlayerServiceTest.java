@@ -1,6 +1,7 @@
 package com.example.haikyuuspring;
 
 import com.example.haikyuuspring.controller.dto.PlayerDTO;
+import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.repository.CharacterRepository;
 import com.example.haikyuuspring.repository.PlayerRepository;
 import com.example.haikyuuspring.services.PlayerService;
@@ -28,20 +29,14 @@ class PlayerServiceTest {
     @Test
     @DisplayName("Create player should persist via PlayerRepository (stub)")
     void createPlayer_Success() {
-        PlayerDTO dto = new PlayerDTO(null, "John Doe", 1L, "Test School", null, null, 20, 10, null);
-        when(characterRepository.existsByName("John Doe")).thenReturn(false);
-
-        // In a full implementation, you'd call: playerService.createPlayer(dto);
-        // verify(playerRepository).save(any(Player.class));
+        PlayerDTO dto = new PlayerDTO(null, "John Doe", 150.3, 16, null, null, 20L, "School", "https://example.url/image.png", Position.LIBERO, 10);
     }
 
     @Test
     @DisplayName("Duplicate player name should be rejected (stub)")
     void createPlayer_NameExists() {
-        PlayerDTO dto = new PlayerDTO(null, "Existing", 1L, "Test School", null, null, 20, 5, "url");
-        when(characterRepository.existsByName("Existing")).thenReturn(true);
+        PlayerDTO dto = new PlayerDTO(null, "Existing", 150.7, 17, null, null, 20L, "School", "https://example.url/image.png", Position.MIDDLE_BLOCKER, 3);
 
-        // In a full implementation, you'd expect an exception path
-        // assertThrows(RuntimeException.class, () -> playerService.createPlayer(dto));
+
     }
 }

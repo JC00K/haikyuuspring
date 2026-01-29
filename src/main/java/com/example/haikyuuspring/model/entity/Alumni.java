@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.model.entity;
 
+import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.model.enums.Position;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,4 +22,7 @@ public class Alumni extends Character {
     private Position position;
 
     private Integer jerseyNumber;
+
+    private Boolean formerCoach;
+    private CoachingStyle coachingStyle;
 }

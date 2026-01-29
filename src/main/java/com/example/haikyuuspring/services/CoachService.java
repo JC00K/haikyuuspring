@@ -38,6 +38,7 @@ public class CoachService {
         coach.setHeight(coachInfo.height());
         coach.setAge(coachInfo.age());
         coach.setRole(coachInfo.role());
+        coach.setIsRetired(coachInfo.isRetired());
         coach.setImgUrl(coachInfo.imgUrl());
         coach.setCoachRole(coachInfo.coachRole());
 
@@ -53,6 +54,10 @@ public class CoachService {
         Coach newCoach = coachRepository.save(coach);
 
         return convertCoachToDTO(newCoach);
+    }
+
+    public List<CoachDTO> findALlCoaches() {
+        return mapCoachListToDTO(coachRepository.findAll());
     }
 
     public List<CoachDTO> mapCoachListToDTO(List<Coach> coaches) {
@@ -73,6 +78,7 @@ public class CoachService {
                 Optional.ofNullable(coach.getSchool()).map(School::getId).orElse(null),
                 Optional.ofNullable(coach.getSchool()).map(School::getName).orElse(null),
                 coach.getImgUrl(),
+                coach.getIsRetired(),
                 coach.getCoachRole(),
                 coach.getCoachingStyle()
         );

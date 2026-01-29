@@ -5,6 +5,7 @@ import com.example.haikyuuspring.model.enums.Year;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record CharacterDTO(
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Long id,
         Long schoolId,
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.controller.dto;
 
+import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,8 @@ public record AlumniDTO(
         String imgUrl,
         Boolean formerPlayer,
         Position position,
-        Integer jerseyNumber
+        Integer jerseyNumber,
+        Boolean formerCoach,
+        CoachingStyle coachingStyle
 ) {
 }

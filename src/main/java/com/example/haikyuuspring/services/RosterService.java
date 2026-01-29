@@ -5,8 +5,7 @@ import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.*;
 import com.example.haikyuuspring.model.entity.Character;
 import com.example.haikyuuspring.model.enums.Position;
-import com.example.haikyuuspring.repository.CharacterRepository;
-import com.example.haikyuuspring.repository.RosterRepository;
+import com.example.haikyuuspring.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,11 @@ public class RosterService {
     private final RosterRepository rosterRepository;
     private final CharacterRepository characterRepository;
     private final PlayerService playerService;
+    private final PlayerRepository playerRepository;
     private final CoachService coachService;
+    private final CoachRepository coachRepository;
     private final ManagementService managementService;
+    private final ManagementRepository managementRepository;
 
     @Transactional
     public RosterDTO removeCharacterFromRoster(Long rosterId, Long characterId) {
@@ -35,6 +37,44 @@ public class RosterService {
         rosterRepository.save(roster);
         return convertRosterToDTO(roster);
     }
+
+    @Transactional
+    public RosterDTO addPlayerToRoster(Long rosterId, Long playerId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResourceNotFoundException(playerId));
+
+        roster.addPlayerToRoster(player);
+        rosterRepository.save(roster);
+        return convertRosterToDTO(roster);
+    }
+
+    @Transactional
+    public RosterDTO addCoachToRoster(Long rosterId, Long coachId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new ResourceNotFoundException(coachId));
+
+        roster.addCoachToRoster(coach);
+        rosterRepository.save(roster);
+        return convertRosterToDTO(roster);
+    }
+
+    @Transactional
+    public RosterDTO addManagementToRoster(Long rosterId, Long managementId) {
+        Roster roster = rosterRepository.findById(rosterId)
+                .orElseThrow(() -> new ResourceNotFoundException(rosterId));
+        Management management = managementRepository.findById(managementId)
+                .orElseThrow(() -> new ResourceNotFoundException(managementId));
+
+        roster.addManagementToRoster(management);
+        rosterRepository.save(roster);
+        return convertRosterToDTO(roster);
+    }
+
+
 
     public RosterDTO getRosterById(Long rosterId) {
         Roster roster = rosterRepository.findById(rosterId)

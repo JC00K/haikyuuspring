@@ -4,4 +4,5 @@ public enum CoachingStyle {
     DEFENSE,
     ATTACK,
     BLOCK,
+    NONCOACH
 }

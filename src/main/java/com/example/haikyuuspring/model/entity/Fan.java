@@ -14,6 +14,4 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Fan extends Character {
-    private Boolean formerCoach;
-    private CoachingStyle coachingStyle;
 }

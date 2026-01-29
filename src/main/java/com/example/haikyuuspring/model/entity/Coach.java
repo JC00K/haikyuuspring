@@ -16,9 +16,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Coach extends Character {
-
     @Enumerated(EnumType.STRING)
     private CoachRole coachRole;
-
+    private Boolean isRetired;
     private CoachingStyle coachingStyle;
 }
