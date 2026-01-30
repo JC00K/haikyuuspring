@@ -6,6 +6,7 @@ import com.example.haikyuuspring.model.enums.Year;
 import com.example.haikyuuspring.services.PlayerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,16 @@ public class PlayerController {
     @GetMapping("/find_by_year_and_position/{year}_{position}")
     public ResponseEntity<List<PlayerDTO>> getYearAndPosition(@PathVariable Year year, @PathVariable Position position) {
         return ResponseEntity.ok(playerService.findByYearAndPosition(year, position));
+    }
+
+    @GetMapping("/find_by_height_greater_than/{height}")
+    public ResponseEntity<List<PlayerDTO>> getPlayersGreaterThanHeight(@PathVariable Double height) {
+        return ResponseEntity.ok(playerService.findByHeightGreaterThan(height));
+    }
+
+    @GetMapping("/find_by_height_less_than/{height}")
+    public ResponseEntity<List<PlayerDTO>> getPlayersLessThanHeight(@PathVariable Double height) {
+        return ResponseEntity.ok(playerService.findByHeightLessThan(height));
     }
 
     @PostMapping

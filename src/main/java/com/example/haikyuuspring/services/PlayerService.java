@@ -67,6 +67,14 @@ public class PlayerService {
         return findAllPlayers().stream().filter((player) -> player.jerseyNumber().equals(jerseyNumber)).toList();
     }
 
+    public List<PlayerDTO> findByHeightGreaterThan(Double height) {
+        return mapPlayerListToDTO(playerRepository.findByHeightGreaterThan(height));
+    }
+
+    public List<PlayerDTO> findByHeightLessThan(Double height) {
+        return mapPlayerListToDTO(playerRepository.findByHeightLessThan(height));
+    }
+
     public List<PlayerDTO> mapPlayerListToDTO(List<Player> players) {
         return players.stream()
                 .map(this::convertPlayerToDTO)

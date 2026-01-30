@@ -41,10 +41,8 @@ public class CoachService {
         coach.setIsRetired(coachInfo.isRetired());
         coach.setImgUrl(coachInfo.imgUrl());
         coach.setCoachRole(coachInfo.coachRole());
+        coach.setCoachingStyle(coachInfo.coachingStyle());
 
-        if (coachInfo.coachRole() == CoachRole.ASSISTANT) {
-            coach.setCoachingStyle(null);
-        } else coach.setCoachingStyle(coachInfo.coachingStyle());
 
         if (coachInfo.schoolId() != null) {
             School school = schoolRepository.findById(coachInfo.schoolId()).orElseThrow(() -> new ResourceNotFoundException(coachInfo.schoolId()));
