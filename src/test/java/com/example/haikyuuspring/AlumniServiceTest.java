@@ -438,19 +438,7 @@ class AlumniServiceTest {
     @Test
     @DisplayName("Convert alumni to DTO - With all fields")
     void convertAlumniToDTO_WithAllFields() {
-        Alumni completeAlumni = new Alumni();
-        completeAlumni.setId(5L);
-        completeAlumni.setName("Complete Alumni");
-        completeAlumni.setHeight(182.5);
-        completeAlumni.setAge(28);
-        completeAlumni.setRole(Role.ALUMNI);
-        completeAlumni.setSchool(mockSchool);
-        completeAlumni.setImgUrl("https://example.url/complete.png");
-        completeAlumni.setFormerPlayer(true);
-        completeAlumni.setPosition(Position.WING_SPIKER);
-        completeAlumni.setJerseyNumber(4);
-        completeAlumni.setFormerCoach(true);
-        completeAlumni.setCoachingStyle(CoachingStyle.BLOCK);
+        Alumni completeAlumni = getAlumni();
 
         List<Alumni> alumniList = List.of(completeAlumni);
 
@@ -472,6 +460,23 @@ class AlumniServiceTest {
         assertEquals(4, dto.jerseyNumber());
         assertTrue(dto.formerCoach());
         assertEquals(CoachingStyle.BLOCK, dto.coachingStyle());
+    }
+
+    private Alumni getAlumni() {
+        Alumni completeAlumni = new Alumni();
+        completeAlumni.setId(5L);
+        completeAlumni.setName("Complete Alumni");
+        completeAlumni.setHeight(182.5);
+        completeAlumni.setAge(28);
+        completeAlumni.setRole(Role.ALUMNI);
+        completeAlumni.setSchool(mockSchool);
+        completeAlumni.setImgUrl("https://example.url/complete.png");
+        completeAlumni.setFormerPlayer(true);
+        completeAlumni.setPosition(Position.WING_SPIKER);
+        completeAlumni.setJerseyNumber(4);
+        completeAlumni.setFormerCoach(true);
+        completeAlumni.setCoachingStyle(CoachingStyle.BLOCK);
+        return completeAlumni;
     }
 
     @Test

@@ -149,7 +149,7 @@ class CoachServiceTest {
         noSchoolCoach.setId(2L);
         noSchoolCoach.setName("Independent Coach");
         noSchoolCoach.setCoachRole(CoachRole.HEAD);
-        noSchoolCoach.setCoachingStyle(CoachingStyle.DEFENSE);
+        noSchoolCoach.setCoachingStyle(CoachingStyle.ATTACK);
 
         when(characterRepository.existsByName(noSchoolDTO.name())).thenReturn(false);
         when(coachRepository.save(any(Coach.class))).thenReturn(noSchoolCoach);
@@ -177,14 +177,14 @@ class CoachServiceTest {
                 "https://example.url/assistant.png",
                 false,
                 CoachRole.ASSISTANT,
-                CoachingStyle.DEFENSE
+                CoachingStyle.DEFENSE // This is what we're creating
         );
 
         Coach assistantCoach = new Coach();
         assistantCoach.setId(3L);
         assistantCoach.setName("Assistant Coach");
         assistantCoach.setCoachRole(CoachRole.ASSISTANT);
-        assistantCoach.setCoachingStyle(CoachingStyle.ATTACK);
+        assistantCoach.setCoachingStyle(CoachingStyle.DEFENSE); // Mock returns same value
         assistantCoach.setSchool(mockSchool);
 
         when(characterRepository.existsByName(assistantDTO.name())).thenReturn(false);
@@ -196,7 +196,7 @@ class CoachServiceTest {
         assertNotNull(result);
         assertEquals(assistantDTO.name(), result.name());
         assertEquals(CoachRole.ASSISTANT, result.coachRole());
-        assertEquals(CoachingStyle.BLOCK, result.coachingStyle());
+        assertEquals(CoachingStyle.DEFENSE, result.coachingStyle()); // Expect same value
         verify(characterRepository).existsByName(assistantDTO.name());
         verify(coachRepository).save(any(Coach.class));
     }
@@ -251,9 +251,9 @@ class CoachServiceTest {
                 null,
                 null,
                 "https://example.url/retired.png",
-                true,
+                true, // Retired
                 CoachRole.HEAD,
-                CoachingStyle.ATTACK
+                CoachingStyle.DEFENSE
         );
 
         Coach retiredCoach = new Coach();
@@ -261,7 +261,7 @@ class CoachServiceTest {
         retiredCoach.setName("Retired Coach");
         retiredCoach.setIsRetired(true);
         retiredCoach.setCoachRole(CoachRole.HEAD);
-        retiredCoach.setCoachingStyle(CoachingStyle.ATTACK);
+        retiredCoach.setCoachingStyle(CoachingStyle.DEFENSE);
 
         when(characterRepository.existsByName(retiredDTO.name())).thenReturn(false);
         when(coachRepository.save(any(Coach.class))).thenReturn(retiredCoach);
@@ -289,10 +289,10 @@ class CoachServiceTest {
                 "https://example.url/complete.png",
                 false,
                 CoachRole.HEAD,
-                CoachingStyle.BLOCK
+                CoachingStyle.DEFENSE
         );
 
-        Coach completeCoach = getCoach();
+        Coach completeCoach = getCompleteCoach();
 
         when(characterRepository.existsByName(completeDTO.name())).thenReturn(false);
         when(schoolRepository.findById(completeDTO.schoolId())).thenReturn(Optional.of(mockSchool));
@@ -312,7 +312,7 @@ class CoachServiceTest {
         verify(coachRepository).save(any(Coach.class));
     }
 
-    private Coach getCoach() {
+    private Coach getCompleteCoach() {
         Coach completeCoach = new Coach();
         completeCoach.setId(6L);
         completeCoach.setName("Complete Coach");
@@ -428,7 +428,7 @@ class CoachServiceTest {
     @Test
     @DisplayName("Convert coach to DTO - With all fields")
     void convertCoachToDTO_WithAllFields() {
-        Coach completeCoach = getCompleteCoach();
+        Coach completeCoach = getCoach();
 
         List<Coach> coaches = List.of(completeCoach);
 
@@ -450,7 +450,7 @@ class CoachServiceTest {
         assertEquals(CoachingStyle.ATTACK, dto.coachingStyle());
     }
 
-    private Coach getCompleteCoach() {
+    private Coach getCoach() {
         Coach completeCoach = new Coach();
         completeCoach.setId(7L);
         completeCoach.setName("Complete Coach");
@@ -473,7 +473,7 @@ class CoachServiceTest {
         coachWithoutSchool.setName("No School Coach");
         coachWithoutSchool.setSchool(null);
         coachWithoutSchool.setCoachRole(CoachRole.HEAD);
-        coachWithoutSchool.setCoachingStyle(CoachingStyle.BLOCK);
+        coachWithoutSchool.setCoachingStyle(CoachingStyle.DEFENSE);
 
         List<Coach> coaches = List.of(coachWithoutSchool);
 
@@ -507,7 +507,7 @@ class CoachServiceTest {
         assertEquals(1, result.size());
         CoachDTO dto = result.getFirst();
         assertEquals(CoachRole.ASSISTANT, dto.coachRole());
-        assertEquals(CoachingStyle.BLOCK, dto.coachingStyle());
+        assertEquals(CoachingStyle.ATTACK, dto.coachingStyle());
     }
 
     @Test

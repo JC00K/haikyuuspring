@@ -253,7 +253,7 @@ class PlayerServiceTest {
         Player player2 = new Player();
         player2.setId(2L);
         player2.setName("Player 2");
-        player2.setPosition(Position.WING_SPIKER);
+        player2.setPosition(Position.OUTSIDE_HITTER);
         player2.setSchool(mockSchool);
 
         Player player3 = new Player();
