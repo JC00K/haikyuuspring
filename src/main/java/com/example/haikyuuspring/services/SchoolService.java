@@ -3,6 +3,7 @@ package com.example.haikyuuspring.services;
 import com.example.haikyuuspring.controller.dto.*;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
+import com.example.haikyuuspring.model.entity.Character;
 import com.example.haikyuuspring.model.entity.School;
 import com.example.haikyuuspring.model.entity.Roster;
 import com.example.haikyuuspring.repository.SchoolRepository;
@@ -40,7 +41,7 @@ public class SchoolService {
         roster.setSchool(school);
         School newSchool = schoolRepository.save(school);
 
-        return convertSchoolToDto(newSchool);
+        return convertSchoolToDTO(newSchool);
     }
 
     @Transactional
@@ -51,7 +52,11 @@ public class SchoolService {
 
     public SchoolDTO getSchoolInfo(Long schoolId) {
         School school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException(schoolId));
-        return convertSchoolToDto(school);
+        return convertSchoolToDTO(school);
+    }
+
+    public List<SchoolDTO> getAllSchools() {
+        return mapListToDTO(schoolRepository.findAll());
     }
 
     public List<SchoolDTO> findByPrefecture(String prefecture) {
@@ -61,7 +66,7 @@ public class SchoolService {
             throw new ResourceNotFoundException(prefecture);
         }
 
-        return schools.stream().map(this::convertSchoolToDto).toList();
+        return schools.stream().map(this::convertSchoolToDTO).toList();
     }
 
     public List<SchoolLookupDTO> lookupForDropdown() {
@@ -70,7 +75,13 @@ public class SchoolService {
                 .toList();
     }
 
-    private SchoolDTO convertSchoolToDto(School school) {
+    public List<SchoolDTO> mapListToDTO(List<School> schools) {
+        return schools.stream()
+                .map(this::convertSchoolToDTO)
+                .toList();
+    }
+
+    private SchoolDTO convertSchoolToDTO(School school) {
         List<PlayerDTO> players = null;
         List<CoachDTO> coaches = null;
         List<ManagementDTO> management = null;

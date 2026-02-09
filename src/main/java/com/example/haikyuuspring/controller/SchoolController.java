@@ -8,6 +8,7 @@ import com.example.haikyuuspring.services.CharacterService;
 import com.example.haikyuuspring.services.SchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,11 @@ public class SchoolController {
     @GetMapping
     public ResponseEntity<List<SchoolLookupDTO>> getSchoolLookup() {
         return ResponseEntity.ok(schoolService.lookupForDropdown());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SchoolDTO>> getAllSchools() {
+        return ResponseEntity.ok(schoolService.getAllSchools());
     }
 
     @GetMapping("/{school}/info")
