@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.services;
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.CharacterDTO;
 import com.example.haikyuuspring.controller.dto.CoachDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
@@ -57,6 +58,13 @@ public class CoachService {
     public List<CoachDTO> findALlCoaches() {
         return mapCoachListToDTO(coachRepository.findAll());
     }
+
+    public CoachDTO findById(Long id) {
+        return coachRepository.findById(id)
+                .map(this::convertCoachToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
 
     public List<CoachDTO> mapCoachListToDTO(List<Coach> coaches) {
         return coaches.stream()

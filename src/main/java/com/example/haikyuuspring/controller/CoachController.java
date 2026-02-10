@@ -1,6 +1,7 @@
 package com.example.haikyuuspring.controller;
 
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.CoachDTO;
 import com.example.haikyuuspring.services.CoachService;
 import jakarta.validation.Valid;
@@ -20,6 +21,11 @@ public class CoachController {
     @GetMapping
     public ResponseEntity<List<CoachDTO>> getAllCoaches() {
         return ResponseEntity.ok(coachService.findALlCoaches());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CoachDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(coachService.findById(id));
     }
 
     @PostMapping

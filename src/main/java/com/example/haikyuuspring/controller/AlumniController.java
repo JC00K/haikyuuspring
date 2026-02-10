@@ -21,6 +21,11 @@ public class AlumniController {
         return ResponseEntity.ok(alumniService.findAllAlumni());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AlumniDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(alumniService.findById(id));
+    }
+
     @GetMapping("/all_former_players")
     public ResponseEntity<List<AlumniDTO>> getAllFormerPlayers() {
         return ResponseEntity.ok(alumniService.findAllFormerPlayers());

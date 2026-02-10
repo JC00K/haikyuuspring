@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.services;
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.FanDTO;
 import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
@@ -49,6 +50,13 @@ public class FanService {
     public List<FanDTO> findAllFans() {
         return mapFanListToDTO(fanRepository.findAll());
     }
+
+    public FanDTO findById(Long id) {
+        return fanRepository.findById(id)
+                .map(this::convertFanToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
 
     public List<FanDTO> mapFanListToDTO(List<Fan> fan) {
         return fan.stream()

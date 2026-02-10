@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.controller;
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.PlayerDTO;
 import com.example.haikyuuspring.model.enums.Position;
 import com.example.haikyuuspring.model.enums.Year;
@@ -22,6 +23,11 @@ public class PlayerController {
     @GetMapping
     public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
         return ResponseEntity.ok(playerService.findAllPlayers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PlayerDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(playerService.findById(id));
     }
 
     @GetMapping("/position/{position}")

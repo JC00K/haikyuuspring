@@ -74,7 +74,9 @@ public class RosterService {
         return convertRosterToDTO(roster);
     }
 
-
+    public List<RosterDTO> getAllRosters() {
+        return mapRosterListToDTO(rosterRepository.findAll());
+    }
 
     public RosterDTO getRosterById(Long rosterId) {
         Roster roster = rosterRepository.findById(rosterId)

@@ -1,5 +1,6 @@
 package com.example.haikyuuspring.controller;
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.FanDTO;
 import com.example.haikyuuspring.services.FanService;
 import jakarta.validation.Valid;
@@ -19,6 +20,11 @@ public class FanController {
     @GetMapping
     public ResponseEntity<List<FanDTO>> getAllFans() {
         return ResponseEntity.ok(fanService.findAllFans());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FanDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(fanService.findById(id));
     }
 
     @PostMapping

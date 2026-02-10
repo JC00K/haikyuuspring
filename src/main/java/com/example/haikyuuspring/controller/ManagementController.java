@@ -1,6 +1,7 @@
 package com.example.haikyuuspring.controller;
 
 
+import com.example.haikyuuspring.controller.dto.AlumniDTO;
 import com.example.haikyuuspring.controller.dto.ManagementDTO;
 import com.example.haikyuuspring.model.enums.ManagementRole;
 import com.example.haikyuuspring.services.ManagementService;
@@ -21,6 +22,11 @@ public class ManagementController {
     @GetMapping
     public ResponseEntity<List<ManagementDTO>> getAllManagement() {
         return ResponseEntity.ok(managementService.findAllManagement());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ManagementDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(managementService.findById(id));
     }
 
     @GetMapping("/get_by_school_id/{schoolId}")

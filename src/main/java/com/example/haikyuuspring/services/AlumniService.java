@@ -74,6 +74,12 @@ public class AlumniService {
         return mapAlumniListToDTO(alumniRepository.findAll());
     }
 
+    public AlumniDTO findById(Long id) {
+        return alumniRepository.findById(id)
+                .map(this::convertAlumniToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
     public List<AlumniDTO> findAllFormerPlayers() {
         return findAllAlumni().stream().filter((alumni) -> alumni.formerPlayer() == true).toList();
     }

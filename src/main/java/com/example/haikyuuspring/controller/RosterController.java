@@ -14,10 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/roster")
+@RequestMapping("/api/v1/rosters")
 @RequiredArgsConstructor
 public class RosterController {
     private final RosterService rosterService;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<RosterDTO>> getAllRosters() {
+        return ResponseEntity.ok(rosterService.getAllRosters());
+    }
 
     @GetMapping("/get_roster_by_id/{rosterId}")
     public ResponseEntity<RosterDTO> getRosterById(@PathVariable Long rosterId) {
