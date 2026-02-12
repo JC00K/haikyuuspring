@@ -5,7 +5,6 @@ import com.example.haikyuuspring.exception.ResourceDuplicateException;
 import com.example.haikyuuspring.exception.ResourceNotFoundException;
 import com.example.haikyuuspring.model.entity.Alumni;
 import com.example.haikyuuspring.model.entity.School;
-import com.example.haikyuuspring.model.enums.CoachingStyle;
 import com.example.haikyuuspring.repository.AlumniRepository;
 import com.example.haikyuuspring.repository.CharacterRepository;
 
@@ -58,14 +57,6 @@ public class AlumniService {
             alumni.setJerseyNumber(null);
         }
 
-        if (Boolean.TRUE.equals(alumniInfo.formerCoach())) {
-            alumni.setFormerCoach(true);
-            alumni.setCoachingStyle(alumniInfo.coachingStyle());
-        } else {
-            alumni.setFormerCoach(false);
-            alumni.setCoachingStyle(CoachingStyle.NONCOACH);
-        }
-
         Alumni newAlumni = alumniRepository.save(alumni);
         return convertAlumniToDTO(newAlumni);
     }
@@ -106,9 +97,7 @@ public class AlumniService {
                 alumni.getImgUrl(),
                 alumni.getFormerPlayer(),
                 alumni.getPosition(),
-                alumni.getJerseyNumber(),
-                alumni.getFormerCoach(),
-                alumni.getCoachingStyle()
+                alumni.getJerseyNumber()
         );
     }
 }

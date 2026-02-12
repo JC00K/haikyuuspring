@@ -22,7 +22,4 @@ public class Alumni extends Character {
     private Position position;
 
     private Integer jerseyNumber;
-
-    private Boolean formerCoach;
-    private CoachingStyle coachingStyle;
 }

@@ -18,8 +18,6 @@ public record AlumniDTO(
         String imgUrl,
         Boolean formerPlayer,
         Position position,
-        Integer jerseyNumber,
-        Boolean formerCoach,
-        CoachingStyle coachingStyle
+        Integer jerseyNumber
 ) {
 }
