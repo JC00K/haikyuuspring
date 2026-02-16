@@ -29,14 +29,15 @@ public class ImageProxyController {
     @GetMapping("/image")
     public ResponseEntity<byte[]> proxyImage(@RequestParam String url) {
         try {
-            URI uri = new URI(url);
+            URI uri = URI.create(url);
+
             String host = uri.getHost();
 
-            if (ALLOWED_DOMAINS.stream().noneMatch(host::contains)) {
+            if (host == null || ALLOWED_DOMAINS.stream().noneMatch(host::contains)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
 
-            byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+            byte[] imageBytes = restTemplate.getForObject(uri, byte[].class);
 
             MediaType contentType = determineContentType(url);
 
@@ -47,6 +48,7 @@ public class ImageProxyController {
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
 
         } catch (Exception e) {
+            System.err.println("Proxy error for URL " + url + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
